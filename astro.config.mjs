@@ -1,10 +1,13 @@
 // @ts-check
+import { defineConfig } from 'astro/config';
 
 import mdx from '@astrojs/mdx';
 import sitemap from '@astrojs/sitemap';
-import { defineConfig } from 'astro/config';
+import spectre from './package/src';
+import expressiveCode from 'astro-expressive-code';
 
-import tailwindcss from '@tailwindcss/vite';
+import node from '@astrojs/node';
+import { spectreDark } from './src/ec-theme';
 
 const SERVER_PORT = 3000;
 // the url to access your blog during local development
@@ -24,10 +27,33 @@ if (isBuild) {
 export default defineConfig({
   server: { port: SERVER_PORT },
   site: BASE_URL,
+
   integrations: [
     sitemap(),
+    spectre({
+      name: 'bokonyi.com',
+      openGraph: {
+        home: {
+          title: 'Szabcsee - Personal Site',
+          description: 'Stuff that I do and write about'
+        },
+        blog: {
+          title: 'Blog',
+          description: 'Stuff that I write about'
+        },
+        projects: {
+          title: 'Projects',
+          description: 'Stuff that I have worked on'
+        }
+      },      
+    }),
+    expressiveCode({
+      themes: [spectreDark],
+    }),
+    mdx(),
   ],
-  vite: {
-    plugins: [tailwindcss()],
-  },
+
+  adapter: node({
+    mode: 'standalone'
+  })
 });

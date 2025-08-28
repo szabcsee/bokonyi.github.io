@@ -1,19 +1,88 @@
-import { defineCollection, z } from 'astro:content';
-import { glob } from 'astro/loaders';
+import { file, glob } from "astro/loaders";
+import { defineCollection, z, reference } from "astro:content";
 
-const blog = defineCollection({
-	// Load Markdown and MDX files in the `src/content/blog/` directory.
-	loader: glob({ base: './src/content/blog', pattern: '**/*.{md,mdx}' }),
-	// Type-check frontmatter using a schema
-	schema: ({ image }) =>
-		z.object({
-			title: z.string(),
-			description: z.string(),
-			// Transform string to Date object
-			pubDate: z.coerce.date(),
-			updatedDate: z.coerce.date().optional(),
-			heroImage: image().optional(),
-		}),
+const other = defineCollection({
+  loader: glob({ base: "src/content/other", pattern: "**/*.{md,mdx}" }),
 });
 
-export const collections = { blog };
+const lucideIconSchema = z.object({
+  type: z.literal("lucide"),
+  name: z.string(),
+});
+
+const simpleIconSchema = z.object({
+  type: z.literal("simple-icons"),
+  name: z.string(),
+});
+
+const quickInfo = defineCollection({
+  loader: file("src/content/info.json"),
+  schema: z.object({
+    id: z.number(),
+    icon: z.union([lucideIconSchema, simpleIconSchema]),
+    text: z.string(),
+  })
+});
+
+const socials = defineCollection({
+  loader: file("src/content/socials.json"),
+  schema: z.object({
+    id: z.number(),
+    icon: z.union([lucideIconSchema, simpleIconSchema]),
+    text: z.string(),
+    link: z.string().url(),
+  })
+});
+
+const workExperience = defineCollection({
+  loader: file("src/content/work.json"),
+  schema: z.object({
+    id: z.number(),
+    title: z.string(),
+    company: z.string(),
+    duration: z.string(),
+    description: z.string(),
+  })
+});
+
+const tags = defineCollection({
+  loader: file("src/content/tags.json"),
+  schema: z.object({
+    id: z.string()
+  })
+});
+
+const posts = defineCollection({
+  loader: glob({ base: "src/content/posts", pattern: "**/*.{md,mdx}" }),
+  schema: ({ image }) => z.object({
+    title: z.string(),
+    createdAt: z.coerce.date(),
+    updatedAt: z.coerce.date().optional(),
+    description: z.string(),
+    tags: z.array(
+      reference("tags")
+    ),
+    draft: z.boolean().optional().default(false),
+    image: image(),
+  })
+});
+
+const projects = defineCollection({
+  loader: glob({ base: "src/content/projects", pattern: "**/*.{md,mdx}" }),
+  schema: ({ image }) => z.object({
+    title: z.string(),
+    description: z.string(),
+    date: z.coerce.date(),
+    image: image(),
+    link: z.string().url().optional(),
+    info: z.array(
+      z.object({
+        text: z.string(),
+        icon: z.union([lucideIconSchema, simpleIconSchema]),
+        link: z.string().url().optional(),
+      })
+    )
+  })
+});
+
+export const collections = { tags, posts, projects, other, quickInfo, socials, workExperience };

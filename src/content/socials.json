@@ -1,0 +1,35 @@
+[
+  {
+    "id": 1,
+    "icon": {
+      "type": "lucide",
+      "name": "github"
+    },
+    "text": "GitHub",
+    "link": "https://github.com/szabcsee"
+  }, {
+    "id": 2,
+    "icon": {
+      "type": "lucide",
+      "name": "twitter"
+    },
+    "text": "Twitter",
+    "link": "https://twitter.com/szabcsee"
+  }, {
+    "id": 3,
+    "icon": {
+      "type": "lucide",
+      "name": "linkedin"
+    },
+    "text": "LinkedIn",
+    "link": "https://linkedin.com/in/szabolcsbokonyi"
+  }, {
+    "id": 4,
+    "icon": {
+      "type": "lucide",
+      "name": "globe"
+    },
+    "text": "my company",
+    "link": "https://digitalyogis.com"
+  }
+]
