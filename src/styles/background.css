@@ -18,5 +18,5 @@
 }
 
 #body-bg {
-  background: "radial-gradient(ellipse 80% 60% at 50% 0%, rgba(120, 180, 255, 0.25), transparent 70%), #000000";
+  background: radial-gradient(ellipse 80% 60% at 50% 0%, rgba(120, 180, 255, 0.25), transparent 20%), #000000;
 }
