@@ -51,4 +51,6 @@ export default defineConfig({
     }),
     mdx(),
   ],
+  
+  output: 'static',
 });
