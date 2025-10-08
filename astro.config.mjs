@@ -6,7 +6,6 @@ import sitemap from '@astrojs/sitemap';
 import spectre from './package/src';
 import expressiveCode from 'astro-expressive-code';
 
-import node from '@astrojs/node';
 import { spectreDark } from './src/ec-theme';
 
 const SERVER_PORT = 3000;
@@ -52,6 +51,4 @@ export default defineConfig({
     }),
     mdx(),
   ],
-  
-  output: 'static',
 });

@@ -5,5 +5,35 @@
     "id": "g-shock"
   }, {
     "id": "chatgpt"
+  }, {
+    "id": "ai"
+  }, {
+    "id": "claude"
+  }, {
+    "id": "development"
+  }, {
+    "id": "productivity"
+  }, {
+    "id": "tools"
+  }, {
+    "id": "tips"
+  }, {
+    "id": "reviews"
+  }, {
+    "id": "howto"
+  }, {
+    "id": "rails"
+  }, {
+    "id": "javascript"
+  }, {
+    "id": "python"
+  }, {
+    "id": "webdev"
+  }, {
+    "id": "ruby_on_rails"
+  }, {
+    "id": "intermediate"
+  }, {
+    "id": "advanced"
   }
 ]
