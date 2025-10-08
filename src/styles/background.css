@@ -16,3 +16,7 @@
   opacity: 1;
   z-index: -1 !important;
 }
+
+#body-bg {
+  background: radial-gradient(ellipse 80% 60% at 50% 0%, rgba(120, 180, 255, 0.25), transparent 80%), #000000;
+}
