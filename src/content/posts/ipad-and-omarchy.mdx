@@ -1,0 +1,339 @@
+---
+title: "Remote Access to Omarchy from iPad using wayvnc and Tailscale"
+description: "A complete guide to securely accessing your Omarchy (Hyprland on Arch) desktop from an iPad using wayvnc and Tailscale"
+createdAt: 10-22-2025
+image: "../assets/omarchy-ipad.png"
+tags:
+  - omarchy
+  - hyprland
+  - wayland
+  - vnc
+  - tailscale
+  - ipad
+  - remote-access
+---
+
+# Remote Access to Omarchy from iPad using wayvnc and Tailscale
+
+Omarchy (Hyprland on Arch) is a fast, lightweight tiling Wayland environment—perfect for your main PC setup. But what if you want to access your Omarchy machine while on the go, using your iPad? With wayvnc and Tailscale, you can connect securely from anywhere with a surprisingly smooth experience.
+
+This guide walks you through the complete setup: installing wayvnc and Tailscale, configuring wayvnc properly for remote access, handling resolution for ultrawide monitors, and connecting from iPad.
+
+## Why This Setup?
+
+**wayvnc** is a VNC server specifically designed for Wayland compositors like Hyprland. Traditional VNC servers (like x11vnc) only work with X11, making wayvnc essential for Wayland environments.
+
+**Tailscale** creates a secure, encrypted peer-to-peer VPN using WireGuard. This means:
+- No need to open firewall ports
+- End-to-end encryption
+- Access your machine from anywhere
+- Zero-trust security model
+- Your desktop never exposed to the public internet
+
+## Prerequisites
+
+- Omarchy (Hyprland on Arch) installed and running
+- An iPad (any model will work)
+- A Tailscale account (free for personal use)
+
+## Step 1: Install wayvnc and Tailscale
+
+On your Omarchy machine, install the required packages:
+```bash
+yay -S wayvnc tailscale
+```
+
+For Tailscale, you can also use the Omarchy menu:
+```
+Menu: Install → Service → Tailscale
+```
+
+Enable and start Tailscale:
+```bash
+sudo systemctl enable --now tailscaled
+sudo tailscale up
+```
+
+Tailscale will give you a secure private IP (something like `100.x.y.z`) that works anywhere, without opening firewall ports.
+
+## Step 2: Configure wayvnc
+
+This is the crucial step that many guides miss! By default, wayvnc only listens on `127.0.0.1` (localhost), which won't accept connections from other devices.
+
+Create the wayvnc config directory and file:
+```bash
+mkdir -p ~/.config/wayvnc
+nano ~/.config/wayvnc/config
+```
+
+Add the following configuration:
+```
+address=0.0.0.0
+port=5900
+enable_auth=false
+```
+
+**Note on security:** We're disabling authentication because Tailscale already provides strong encryption and authentication. Your VNC connection is only accessible through your private Tailscale network, not the public internet.
+
+Save and exit (Ctrl+X, then Y, then Enter).
+
+## Step 3: Get Your Tailscale IP
+
+On your Omarchy machine:
+```bash
+tailscale ip -4
+```
+
+This will output something like `100.115.92.30`. **Write this down**—you'll need it to connect from your iPad.
+
+You can also find this IP in the Tailscale admin panel or by running:
+```bash
+tailscale status
+```
+
+## Step 4: Find Your Monitor Configuration
+
+To optimize the experience for iPad, you'll want to know your monitor setup. Run:
+```bash
+hyprctl monitors
+```
+
+This will show your connected monitors, their names (e.g., `HDMI-A-1`, `DP-2`), and current resolutions.
+
+For example:
+```
+Monitor HDMI-A-1 (ID 0):
+	2560x1080@59.97800 at 0x0
+	description: LG Electronics LG ULTRAWIDE
+```
+
+Note your monitor name and native resolution—you'll need this for the resolution toggle script.
+
+## Step 5: Create a Resolution Toggle Script (Optional but Recommended)
+
+If you have an ultrawide monitor (21:9 aspect ratio like 2560x1080 or 3440x1440), viewing it on an iPad's 4:3 screen will make everything tiny and difficult to use. A resolution toggle script lets you switch to an iPad-friendly resolution when connecting remotely.
+
+Create `~/toggle-resolution.sh`:
+```bash
+#!/bin/bash
+MONITOR="HDMI-A-1"  # Change this to match your monitor name
+
+CURRENT=$(hyprctl monitors | awk -v mon="$MONITOR" '
+    $2 == mon {getline; print $1}' )
+
+if [[ "$CURRENT" == 2560x1080* ]]; then
+    echo "Switching to iPad-friendly resolution (1920x1080@60)..."
+    hyprctl keyword monitor "$MONITOR,1920x1080@60,0x0,1"
+elif [[ "$CURRENT" == 1920x1080* ]]; then
+    echo "Switching back to UltraWide (2560x1080@60)..."
+    hyprctl keyword monitor "$MONITOR,2560x1080@60,0x0,1"
+else
+    echo "Current mode is $CURRENT — defaulting to UltraWide."
+    hyprctl keyword monitor "$MONITOR,2560x1080@60,0x0,1"
+fi
+```
+
+Make it executable:
+```bash
+chmod +x ~/toggle-resolution.sh
+```
+
+### Add a Keyboard Shortcut (Optional)
+
+Add this to `~/.config/hypr/bindings.conf`:
+```
+bindd = SUPER SHIFT, R, Toggle Resolution, exec, ~/toggle-resolution.sh
+```
+
+Now you can press `Super+Shift+R` to toggle between your native ultrawide resolution and an iPad-friendly resolution.
+
+## Step 6: Start wayvnc
+
+In a terminal on your Omarchy machine:
+```bash
+wayvnc --log-level=debug
+```
+
+You should see output similar to:
+```
+Info: Capturing output HDMI-A-1
+Info: >> LG Electronics LG ULTRAWIDE (HDMI-A-1) 2560x1080+0x0
+Info: Listening for connections on 0.0.0.0:5900
+```
+
+**Important:** Make sure it says `0.0.0.0:5900` and NOT `127.0.0.1:5900`. If it says `127.0.0.1`, double-check your config file from Step 2.
+
+### Auto-start wayvnc (Optional)
+
+To have wayvnc start automatically, you can create a systemd user service:
+```bash
+mkdir -p ~/.config/systemd/user
+nano ~/.config/systemd/user/wayvnc.service
+```
+
+Add:
+```ini
+[Unit]
+Description=wayvnc VNC server
+After=graphical-session.target
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/wayvnc
+Restart=on-failure
+
+[Install]
+WantedBy=default.target
+```
+
+Enable and start:
+```bash
+systemctl --user enable --now wayvnc.service
+```
+
+## Step 7: Set Up Your iPad
+
+### Install Tailscale
+
+1. Download **Tailscale** from the App Store
+2. Open it and sign in with the **same account** you used on your Omarchy machine
+3. Both devices should now appear in your Tailscale network
+
+### Install a VNC Client
+
+You have two main options:
+
+**Option 1: RealVNC Viewer (Free)**
+- Simple and functional
+- Good keyboard support
+- Free to use
+
+**Option 2: Screens 5 (Paid)**
+- More polished interface
+- Better gesture support
+- Excellent keyboard and trackpad integration
+- One-time purchase or subscription
+
+Download your preferred VNC client from the App Store.
+
+## Step 8: Connect from iPad
+
+### Before Connecting (If using ultrawide monitor)
+
+On your Omarchy machine, switch to iPad-friendly resolution:
+```bash
+~/toggle-resolution.sh
+```
+
+Or press `Super+Shift+R` if you set up the keyboard shortcut.
+
+### Connect with RealVNC Viewer
+
+1. Open **RealVNC Viewer**
+2. Tap the **+** button to add a new connection
+3. Enter your Tailscale IP: `100.x.y.z:5900` (use the IP from Step 3)
+4. Give it a name like "Omarchy Desktop"
+5. Tap **Connect**
+
+### Connect with Screens 5
+
+1. Open **Screens**
+2. Tap **+** to add a new screen
+3. Choose "New Screen"
+4. Enter your Tailscale IP: `100.x.y.z`
+5. Port: `5900`
+6. Name it "Omarchy"
+7. Tap **Connect**
+
+You should now see your Omarchy desktop on your iPad!
+
+## Using Your iPad as a Development Machine
+
+With this setup, your iPad becomes a powerful remote terminal for your Omarchy machine. Here are some workflows:
+
+### Terminal Access via SSH
+
+For command-line work (like using Claude Code), SSH over Tailscale is even more responsive than VNC:
+
+1. Install **Blink Shell** or **Termius** on your iPad
+2. Add your Tailscale IP as an SSH host
+3. Connect with your username and password (or SSH keys)
+
+### Hybrid Workflow
+
+- Use **SSH** for terminal work and coding
+- Use **VNC** when you need the graphical desktop environment
+
+### With External Keyboard
+
+If you have an iPad with Magic Keyboard or any Bluetooth keyboard, the experience becomes even better. The Super key (Windows key) will be passed through to Hyprland, giving you access to all your Omarchy shortcuts.
+
+## Troubleshooting
+
+### wayvnc hangs or shows no output
+
+Run with debug logging:
+```bash
+wayvnc --log-level=debug
+```
+
+Check that it's listening on `0.0.0.0:5900`, not `127.0.0.1:5900`.
+
+### Can't connect from iPad
+
+1. Verify both devices show up in Tailscale:
+```bash
+   tailscale status
+```
+
+2. Check wayvnc is running:
+```bash
+   ps aux | grep wayvnc
+```
+
+3. Verify the port is open:
+```bash
+   ss -tulpn | grep 5900
+```
+
+### Connection is slow or laggy
+
+- Try switching to a lower resolution with the toggle script
+- Ensure both devices have good internet connections
+- Tailscale usually provides direct peer-to-peer connections, but if it's using relay servers (DERP), performance may vary
+
+### Screen resolution doesn't look right
+
+Run the toggle script before connecting, or manually set a resolution that works better for iPad:
+```bash
+hyprctl keyword monitor "HDMI-A-1,1920x1080@60,0x0,1"
+```
+
+## Security Considerations
+
+This setup is secure because:
+
+1. **Tailscale provides encryption**: All traffic is encrypted with WireGuard
+2. **No exposed ports**: Your VNC server is never exposed to the public internet
+3. **Zero-trust model**: Only devices authenticated in your Tailscale network can connect
+4. **Private IP space**: Tailscale uses the `100.x.y.z` CGNAT address space
+
+We disabled VNC authentication because Tailscale already handles authentication and encryption. If you prefer defense-in-depth, you can enable VNC authentication by removing `enable_auth=false` from the config and setting a password.
+
+## Conclusion
+
+With Omarchy (Hyprland on Arch), wayvnc, and Tailscale, you have a secure, practical remote desktop setup that works from anywhere. The combination of a resolution toggle script and an iPad with keyboard gives you flexibility to use an ultrawide monitor at your desk while maintaining a laptop-friendly experience when connecting remotely.
+
+Whether you're using your iPad for quick administrative tasks, development work with Claude Code, or full desktop access on the go, this setup provides a professional-grade solution without the complexity or security risks of traditional VPN or port-forwarding setups.
+
+## Additional Resources
+
+- [wayvnc GitHub](https://github.com/any1/wayvnc)
+- [Tailscale Documentation](https://tailscale.com/kb/)
+- [Hyprland Wiki](https://wiki.hyprland.org/)
+- [RealVNC Viewer](https://www.realvnc.com/en/connect/download/viewer/)
+- [Screens 5](https://edovia.com/en/screens/)
+
+---
+
+*Have questions or improvements? Feel free to reach out or leave a comment below!*
