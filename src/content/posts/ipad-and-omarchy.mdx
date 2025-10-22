@@ -15,9 +15,13 @@ tags:
 
 # Remote Access to Omarchy from iPad using wayvnc and Tailscale
 
-Omarchy (Hyprland on Arch) is a fast, lightweight tiling Wayland environment—perfect for your main PC setup. But what if you want to access your Omarchy machine while on the go, using your iPad? With wayvnc and Tailscale, you can connect securely from anywhere with a surprisingly smooth experience.
+I have been playing with Omarchy on my Lenovo Legion since a few weeks ago, while waiting for my Bee-Link SER8 to arrive. It has arrived finally yesterday and It was a breeze
+to swap SSDs and get everything up and running. So fast that actually I started to look around the flat, what else I could get involved in the Omarchy madness.
+Probably I will have zero use of it, but my eyes landed on the iPad. And some Claude-ing around and a few articles later I have a relatively secured connection
+and a comfortable resolution switch hotkey set up to connect from anywhere if needed. The process is tried and works so I hope you will appreciate it. 
+The hardware is a 2019 or 2020 iPad Pro and a Bee-Link SER8.
 
-This guide walks you through the complete setup: installing wayvnc and Tailscale, configuring wayvnc properly for remote access, handling resolution for ultrawide monitors, and connecting from iPad.
+Step 3 I totally ignored because authenticating with Tailscale at tailscale up already gave me everything and I was able to connect after as I already had the ip.
 
 ## Why This Setup?
 
@@ -201,9 +205,9 @@ systemctl --user enable --now wayvnc.service
 
 ### Install a VNC Client
 
-You have two main options:
+You have two main options (I went with the first):
 
-**Option 1: RealVNC Viewer (Free)**
+**OzRealVNC Viewer (Free)**
 - Simple and functional
 - Good keyboard support
 - Free to use
@@ -217,8 +221,6 @@ You have two main options:
 Download your preferred VNC client from the App Store.
 
 ## Step 8: Connect from iPad
-
-### Before Connecting (If using ultrawide monitor)
 
 On your Omarchy machine, switch to iPad-friendly resolution:
 ```bash
@@ -245,7 +247,7 @@ Or press `Super+Shift+R` if you set up the keyboard shortcut.
 6. Name it "Omarchy"
 7. Tap **Connect**
 
-You should now see your Omarchy desktop on your iPad!
+You should now see your Omarchy desktop on your iPad! If yes, Congratulations! 
 
 ## Using Your iPad as a Development Machine
 
