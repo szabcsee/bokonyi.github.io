@@ -37,5 +37,19 @@
     "id": "advanced"
   }, {
     "id": "lifestyle"
+  }, {
+    "id": "omarchy"
+  }, {
+    "id": "hyprland"
+  }, {
+    "id": "wayland"
+  }, {
+    "id": "vnc"
+  }, {
+    "id": "tailscale"
+  }, {
+    "id": "ipad"
+  }, {
+    "id": "remote-access"
   }
 ]
