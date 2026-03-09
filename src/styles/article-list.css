@@ -37,3 +37,12 @@
 .blog-tag.active {
   background: var(--primary);
 }
+
+.post-footer {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.25rem;
+  padding-top: 0.5rem;
+  border-top: 1px solid #2a2a2a;
+}

@@ -3,6 +3,7 @@ import '../../styles/article.css';
 
 import ImageGlow from "../../components/ImageGlow.astro";
 import Card from "../../components/Card.astro";
+import AuthorBadge from "../../components/AuthorBadge.astro";
 import Layout from "../../layouts/Layout.astro";
 
 import type { GetStaticPaths } from "astro";
@@ -84,6 +85,9 @@ const { Content, headings } = await render(post);
             <span>{timeToRead(post)} minute{timeToRead(post) === 1 ? "" : "s"} to read</span>
             <span>/</span>
             <span>Tags: {post.data.tags.map((tag) => tag.id).join(", ")}</span>
+          </div>
+          <div class="article-author">
+            <AuthorBadge author={post.data.author ?? 'szabcsee'} size="md" />
           </div>
         </div>
       </div>

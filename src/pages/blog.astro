@@ -4,6 +4,7 @@ import '../styles/article-list.css';
 import { getCollection } from "astro:content";
 import Card from "../components/Card.astro";
 import Icon from "../components/Icon.astro";
+import AuthorBadge from "../components/AuthorBadge.astro";
 import Layout from "../layouts/Layout.astro";
 import { openGraph } from 'spectre:globals';
 
@@ -47,6 +48,9 @@ const tags = posts.flatMap((post) => post.data.tags.map((tag) => tag.id));
 							<span class="post-date">{post.data.createdAt.toLocaleDateString()}</span>
 						</div>
 						<span>{post.data.description}</span>
+						<div class="post-footer">
+							<AuthorBadge author={post.data.author ?? 'szabcsee'} />
+						</div>
 					</a>
 				))}
 			</div>

@@ -64,6 +64,7 @@ const posts = defineCollection({
     ),
     draft: z.boolean().optional().default(false),
     image: image(),
+    author: z.string().optional().default('szabcsee'),
   })
 });
 

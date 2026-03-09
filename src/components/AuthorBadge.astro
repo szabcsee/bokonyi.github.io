@@ -1,0 +1,83 @@
+---
+interface Props {
+  author: string;
+  size?: 'sm' | 'md';
+}
+
+const { author, size = 'sm' } = Astro.props;
+
+const AUTHORS: Record<string, { name: string; avatar: string; label?: string }> = {
+  szabcsee: {
+    name: 'Szabolcs Bökönyi',
+    avatar: 'https://github.com/szabcsee.png?size=64',
+  },
+  bender: {
+    name: 'Bender',
+    avatar: '',
+    label: '🤖',
+  },
+};
+
+const info = AUTHORS[author] ?? { name: author, avatar: '', label: '👤' };
+---
+
+<span class:list={['author-badge', `author-badge--${size}`]}>
+  {info.avatar ? (
+    <img
+      src={info.avatar}
+      alt={info.name}
+      class="author-avatar"
+      loading="lazy"
+      width={size === 'md' ? 28 : 20}
+      height={size === 'md' ? 28 : 20}
+    />
+  ) : (
+    <span class="author-emoji">{info.label}</span>
+  )}
+  <span class="author-name">{info.name}</span>
+  {author === 'bender' && <span class="author-tag">AI</span>}
+</span>
+
+<style>
+  .author-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    color: #c7c7c7;
+    font-size: 0.875rem;
+    text-decoration: none;
+  }
+
+  .author-badge--md {
+    font-size: 0.925rem;
+    gap: 0.5rem;
+  }
+
+  .author-avatar {
+    border-radius: 50%;
+    border: 1px solid #353535;
+    flex-shrink: 0;
+    display: block;
+  }
+
+  .author-emoji {
+    font-size: 1rem;
+    line-height: 1;
+  }
+
+  .author-name {
+    color: #e0e0e0;
+  }
+
+  .author-tag {
+    font-size: 0.65rem;
+    background: rgba(140, 92, 245, 0.18);
+    color: var(--primary-light);
+    border: 1px solid rgba(140, 92, 245, 0.35);
+    border-radius: 3px;
+    padding: 0 0.3rem;
+    line-height: 1.6;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+  }
+</style>
