@@ -1,0 +1,290 @@
+---
+---
+<div class="robot-wrapper">
+  <div class="robot-float">
+    <!-- Antenna -->
+    <div class="r-antenna">
+      <div class="r-antenna-stem"></div>
+      <div class="r-antenna-orb"></div>
+    </div>
+
+    <!-- Head -->
+    <div class="r-head">
+      <div class="r-eyes">
+        <span class="r-eye"><span class="r-pupil"></span></span>
+        <span class="r-eye"><span class="r-pupil r-pupil-delay"></span></span>
+      </div>
+      <span class="r-mouth"></span>
+    </div>
+
+    <!-- Neck -->
+    <div class="r-neck"></div>
+
+    <!-- Torso row: arm + body + arm -->
+    <div class="r-torso-row">
+      <div class="r-arm r-arm-l"></div>
+      <div class="r-body">
+        <div class="r-panel">
+          <div class="r-leds">
+            <span class="r-led r-led-g"></span>
+            <span class="r-led r-led-y"></span>
+            <span class="r-led r-led-c"></span>
+          </div>
+          <div class="r-bar">
+            <div class="r-bar-fill"></div>
+          </div>
+          <span class="r-label">DY</span>
+        </div>
+      </div>
+      <div class="r-arm r-arm-r"></div>
+    </div>
+
+    <!-- Legs -->
+    <div class="r-legs">
+      <div class="r-leg"></div>
+      <div class="r-leg"></div>
+    </div>
+  </div>
+
+  <!-- Glow shadow -->
+  <div class="r-shadow"></div>
+</div>
+
+<style>
+  .robot-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0.5rem 0 0.25rem;
+    user-select: none;
+  }
+
+  .robot-float {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    animation: robotFloat 3.5s ease-in-out infinite;
+  }
+
+  @keyframes robotFloat {
+    0%, 100% { transform: translateY(0); }
+    50%       { transform: translateY(-10px); }
+  }
+
+  /* Antenna */
+  .r-antenna {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 1px;
+  }
+  .r-antenna-stem {
+    width: 3px;
+    height: 14px;
+    background: #5a5a6a;
+    border-radius: 2px;
+  }
+  .r-antenna-orb {
+    width: 11px;
+    height: 11px;
+    background: var(--primary);
+    border-radius: 50%;
+    margin-top: -2px;
+    box-shadow: 0 0 8px var(--primary), 0 0 20px var(--primary);
+    animation: orbPulse 1.8s ease-in-out infinite;
+  }
+  @keyframes orbPulse {
+    0%, 100% { box-shadow: 0 0 8px var(--primary), 0 0 20px var(--primary); opacity: 1; }
+    50%       { box-shadow: 0 0 3px var(--primary); opacity: 0.45; }
+  }
+
+  /* Head */
+  .r-head {
+    width: 62px;
+    height: 52px;
+    background: #a1a1b0;
+    border-radius: 12px 12px 6px 6px;
+    border: 2px solid #6b6b80;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+  }
+  .r-eyes {
+    display: flex;
+    gap: 12px;
+  }
+  .r-eye {
+    width: 16px;
+    height: 16px;
+    background: #1c1c2e;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .r-pupil {
+    width: 8px;
+    height: 8px;
+    background: #22d3ee;
+    border-radius: 50%;
+    box-shadow: 0 0 6px #22d3ee, 0 0 12px #22d3ee80;
+    animation: eyeGlow 2.2s ease-in-out infinite;
+  }
+  .r-pupil-delay {
+    animation-delay: 0.15s;
+  }
+  @keyframes eyeGlow {
+    0%, 100% { opacity: 1; }
+    50%       { opacity: 0.35; }
+  }
+  .r-mouth {
+    width: 22px;
+    height: 7px;
+    background: #2d2d40;
+    border-radius: 4px;
+    animation: mouthPulse 2.2s ease-in-out infinite;
+  }
+  @keyframes mouthPulse {
+    0%, 100% { width: 22px; }
+    50%       { width: 14px; }
+  }
+
+  /* Neck */
+  .r-neck {
+    width: 18px;
+    height: 8px;
+    background: #6b6b80;
+  }
+
+  /* Torso row */
+  .r-torso-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 0;
+  }
+
+  /* Body */
+  .r-body {
+    width: 72px;
+    height: 68px;
+    background: #a1a1b0;
+    border-radius: 6px;
+    border: 2px solid #6b6b80;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .r-panel {
+    width: 46px;
+    height: 44px;
+    background: #1e1e2e;
+    border-radius: 4px;
+    border: 1px solid #38384a;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    padding: 5px;
+  }
+  .r-leds {
+    display: flex;
+    gap: 6px;
+  }
+  .r-led {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    animation: ledPulse 2s ease-in-out infinite;
+  }
+  .r-led-g { background: #34d399; box-shadow: 0 0 5px #34d399; }
+  .r-led-y { background: #fbbf24; box-shadow: 0 0 5px #fbbf24; animation-delay: 0.5s; }
+  .r-led-c { background: #22d3ee; box-shadow: 0 0 5px #22d3ee; animation-delay: 1s; }
+  @keyframes ledPulse {
+    0%, 100% { opacity: 1; }
+    50%       { opacity: 0.25; }
+  }
+  .r-bar {
+    width: 34px;
+    height: 5px;
+    background: #0d0d1a;
+    border-radius: 3px;
+    overflow: hidden;
+  }
+  .r-bar-fill {
+    height: 100%;
+    width: 65%;
+    background: linear-gradient(to right, var(--primary), #22d3ee);
+    border-radius: 3px;
+    animation: barFlow 3s ease-in-out infinite;
+  }
+  @keyframes barFlow {
+    0%, 100% { width: 65%; }
+    50%       { width: 35%; }
+  }
+  .r-label {
+    font-size: 7px;
+    color: #5a5a7a;
+    font-family: 'Geist Mono', monospace;
+    font-weight: bold;
+    letter-spacing: 1px;
+  }
+
+  /* Arms */
+  .r-arm {
+    width: 13px;
+    height: 44px;
+    background: #a1a1b0;
+    border: 1px solid #6b6b80;
+    border-radius: 6px;
+    margin-top: 8px;
+  }
+  .r-arm-l {
+    transform-origin: top center;
+    animation: armL 3.5s ease-in-out infinite;
+    border-radius: 6px 4px 4px 6px;
+  }
+  .r-arm-r {
+    transform-origin: top center;
+    animation: armR 3.5s ease-in-out infinite;
+    border-radius: 4px 6px 6px 4px;
+  }
+  @keyframes armL {
+    0%, 100% { transform: rotate(-8deg); }
+    50%       { transform: rotate(12deg); }
+  }
+  @keyframes armR {
+    0%, 100% { transform: rotate(8deg); }
+    50%       { transform: rotate(-12deg); }
+  }
+
+  /* Legs */
+  .r-legs {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+  }
+  .r-leg {
+    width: 14px;
+    height: 18px;
+    background: #6b6b80;
+    border-radius: 0 0 6px 6px;
+  }
+
+  /* Shadow */
+  .r-shadow {
+    width: 64px;
+    height: 8px;
+    background: rgba(var(--primary-rgb), 0.35);
+    border-radius: 50%;
+    filter: blur(5px);
+    margin-top: 4px;
+    animation: shadowFlow 3.5s ease-in-out infinite;
+  }
+  @keyframes shadowFlow {
+    0%, 100% { width: 64px; opacity: 0.35; }
+    50%       { width: 44px; opacity: 0.1; }
+  }
+</style>

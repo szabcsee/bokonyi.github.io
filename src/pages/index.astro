@@ -7,14 +7,14 @@ import Card from '../components/Card.astro';
 import Layout from '../layouts/Layout.astro';
 import ImageGlow from '../components/ImageGlow.astro';
 import Icon from '../components/Icon.astro';
+import Robot from '../components/Robot.astro';
 import { getCollection } from 'astro:content';
 import { getEntry } from 'astro:content';
 import { render } from 'astro:content';
 import { name, openGraph } from 'spectre:globals';
 
-const [posts, projects, about, workExperience, quickInfo, socials] = await Promise.all([
+const [posts, about, workExperience, quickInfo, socials] = await Promise.all([
 	getCollection('posts', (post) => post.data.draft !== true),
-	getCollection('projects'),
 	getEntry('other', 'about'),
 	getCollection('workExperience'),
 	getCollection('quickInfo'),
@@ -31,7 +31,7 @@ const { Content: About } = await render(about!);
 	pagefindIgnore
 >
 	<div class="layout-grid-left" slot="left">
-		<Card class="flex-col-card">
+		<Card class="flex-col-card card-anim" style="animation-delay: 0ms">
 			<ImageGlow quality={100} width={120} height={120} src={ProfilePicture} alt="Louis looking out of a window" loading='eager' />
 			<h2>{name}</h2>
 			<ul class="overview-list">
@@ -43,7 +43,10 @@ const { Content: About } = await render(about!);
 				))}
 			</ul>
 		</Card>
-		<Card>
+		<Card class="card-anim robot-card" style="animation-delay: 80ms">
+			<Robot />
+		</Card>
+		<Card class="card-anim" style="animation-delay: 160ms">
 			<h3 class="no-mt">Socials</h3>
 			<ul class="overview-list">
 				{socials.map((item) => (
@@ -58,7 +61,7 @@ const { Content: About } = await render(about!);
 		</Card>
 	</div>
 	<div class="layout-grid-right" slot="right">
-		<Card>
+		<Card class="card-anim" style="animation-delay: 50ms">
 			<div class="header-container">
 				<Icon type='lucide' name="user" width={24} height={24} class='glow-icon' />
 				<h2>About me</h2>
@@ -67,7 +70,7 @@ const { Content: About } = await render(about!);
 				<About />
 			</div>
 		</Card>
-		<Card>
+		<Card class="card-anim" style="animation-delay: 130ms">
 			<div class="header-container">
 				<Icon type='lucide' name="rss" width={24} height={24} class='glow-icon' />
 				<h2>Latest Posts</h2>
@@ -84,24 +87,7 @@ const { Content: About } = await render(about!);
 				))}
 			</div>
 		</Card>
-		<Card>
-			<div class="header-container">
-				<Icon type='lucide' name="folder-git" width={24} height={24} class='glow-icon' />
-				<h2>Latest Projects</h2>
-			</div>
-			<div class="content-container">
-				{projects.sort((a, b) => b.data.date.getTime() - a.data.date.getTime()).slice(0, 2).map((project) => (
-					<a href={`/projects/${project.id}`} class="post-container">
-						<div class="post-header">
-							<h3>{project.data.title}</h3>
-							<span class="post-date">{project.data.date.toLocaleDateString()}</span>
-						</div>
-						<span>{project.data.description}</span>
-					</a>
-				))}
-			</div>
-		</Card>
-		<Card>
+		<Card class="card-anim" style="animation-delay: 210ms">
 			<div class="header-container">
 				<Icon type='lucide' name="briefcase-business" width={24} height={24} class='glow-icon' />
 				<h2>Work Experience</h2>
