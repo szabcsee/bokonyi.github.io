@@ -24,6 +24,21 @@ const [posts, about, workExperience, quickInfo, socials] = await Promise.all([
 
 // biome-ignore lint/style/noNonNullAssertion: Should always be defined.
 const { Content: About } = await render(about!);
+
+// Get the latest post for the hero section
+const sortedPosts = posts.sort((a, b) => b.data.createdAt.getTime() - a.data.createdAt.getTime());
+const latestPost = sortedPosts[0];
+
+// Calculate reading time for the hero post
+function timeToRead(post: CollectionEntry<'posts'>): number {
+	const numWords = (post.body || "")
+		.replace(/.*\[(.*?)\].*/gm, "$1")
+		.replace(/```.*?```/gms, "")
+		.split(/\s+/).length;
+	const numImages = post.body?.match(/!\[/g)?.length || 0;
+	const numCodeblocks = post.body?.match(/```/g)?.length || 0;
+	return Math.ceil(numWords / 200) + Math.ceil(numImages / 6) + Math.ceil(numCodeblocks / 3);
+}
 ---
 
 <Layout
@@ -62,6 +77,27 @@ const { Content: About } = await render(about!);
 		</Card>
 	</div>
 	<div class="layout-grid-right" slot="right">
+		{latestPost && latestPost.data.image && (
+			<a href={`/blog/${latestPost.id}`} class="hero-post-link card-anim" style="animation-delay: 0ms">
+				<Card class="hero-post-card">
+					<div class="article-header">
+						<ImageGlow quality={100} class="article-image" src={latestPost.data.image} alt={latestPost.data.title} />
+						<div class="header">
+							<div>
+								<h1 class="no-mt article-h1 hero-h1">{latestPost.data.title}</h1>
+							</div>
+							<div class="article-info">
+								<span>{latestPost.data.createdAt.toLocaleDateString()}</span>
+								<span>/</span>
+								<span>{timeToRead(latestPost)} minute{timeToRead(latestPost) === 1 ? "" : "s"} to read</span>
+								<span>/</span>
+								<span>Tags: {latestPost.data.tags.map((tag) => tag.id).join(", ")}</span>
+							</div>
+						</div>
+					</div>
+				</Card>
+			</a>
+		)}
 		<Card class="card-anim" style="animation-delay: 50ms">
 			<div class="header-container">
 				<Icon type='lucide' name="user" width={24} height={24} class='glow-icon' />
