@@ -1,0 +1,104 @@
+---
+title: "I Built an Autonomous CEO for My AI Startup"
+description: "What happens when you give an AI agent a budget, a task queue, and permission to act? Six weeks into running an autonomous CEO, here's what's working, what's terrifying, and why every service business should consider this."
+image: "../assets/autonomous-ceo-civisexpat.png"
+createdAt: 2026-04-28
+draft: false
+author: szabcsee
+tags:
+  - ai
+  - automation
+  - entrepreneurship
+  - business
+---
+
+## The pitch that started it
+
+Three months ago I was drowning. I had too many clients, too many tasks, too many things that needed doing before anything else could get done. Classic solopreneur bottleneck — the buck stopped with me, and I was only one person.
+
+So I did what any rational person with a background in AI automation would do: I built a CEO.
+
+Not a metaphor. An actual autonomous agent that:
+- Checks email every two hours
+- Reviews the task queue
+- Delegates work to specialist sub-agents
+- Reports back when things are done
+- Flags anything that needs human input
+
+The client: CivisExpat — a relocation service helping expats settle in Debrecen, Hungary's second-largest city and growing hub for remote workers and international companies.
+
+The goal: run the operation with me in the loop, not at the center of it.
+
+---
+
+## What the CEO actually does
+
+The autonomous CEO (we call it "Bender Online Media" internally) runs on a schedule — six wake-ups per day, roughly every four hours. Each wake cycle does three things:
+
+**Email triage.** Scans the inbox, marks urgent items, flags anything requiring a response. If something needs my input, I get a Telegram ping. Otherwise it's handled.
+
+**Task review.** Checks the task queue and picks up where it left off. Our tasks move through a pipeline: todo → in-progress → review → done. The CEO keeps the pipeline flowing.
+
+**Work delegation.** If a task needs specialist skills — like writing a cold email sequence or building a landing page — the CEO spawns a sub-agent, gives it clear instructions, waits for the result, and files it appropriately.
+
+Sound futuristic? It is. But it's also surprisingly mundane. The magic isn't the technology — it's the discipline of having a system.
+
+---
+
+## The tech stack
+
+I'm not going to share the full architecture (that's the product), but here's the general shape:
+
+- **OpenClaw** as the agent runtime — handles memory, skills, message routing
+- **Telegram** as the communication layer — everything reports back to me via chat
+- **Sub-agents** for specialist tasks — spawned on demand, given clear deliverables
+- **GitHub** for code and content — everything lands in repos, version controlled
+- **Notion** as the client-facing dashboard — tasks, projects, progress visible to CivisExpat
+
+The CEO isn't replacing me. It's replacing the *coordination overhead* that was eating 60% of my time. Meetings, status updates, "where are we on X?" messages — gone. The CEO handles it.
+
+---
+
+## What's surprised me
+
+**Speed of execution.** When something needs doing, the CEO doesn't procrastinate. It doesn't check if I'm in the mood. It just does the work. A task that would have sat in my backlog for a week gets done in the next wake cycle.
+
+**Quality consistency.** Since everything follows a system, the output is consistent. Sub-agents have clear prompts, clear deliverables, clear success criteria. No more "I didn't know you wanted it that way."
+
+**The scary part.** There are moments when I check the log and the CEO has done £200 worth of work in four hours. And I didn't lift a finger. That's great — until you realise: what happens when this scales? What happens when it's not one client but ten?
+
+---
+
+## What breaks
+
+**Ambiguous tasks still need a human.** The CEO can handle well-defined work. "Write three follow-up emails" — done. "Handle the Situations When a Client is Unhappy with Our Service" — not yet. Fuzzy problems still need fuzzy human judgment.
+
+**Context costs money.** Every wake cycle uses tokens. Every sub-agent spawn costs money. At small scale this is negligible. At larger scale it becomes a real line item that needs optimisation.
+
+**Trust is earned.** The first week I reviewed everything. Now I skim the logs and mostly just approve the outputs. That shift happened faster than I expected — but only because the system was designed to be auditable. If I can't see what the CEO did, I can't trust it.
+
+---
+
+## Why this matters for SMEs
+
+Here's the thing: most small businesses have the same problem I had. You're the bottleneck. Every decision flows through you. Every task waits for you. Growth means hiring more people, which means more management, which means less time doing the actual work.
+
+What if you could delegate the coordination?
+
+Not replace yourself — replace the overhead. Give an AI agent your inbox, your task system, your project management tool, and let it keep things moving while you focus on the work that actually needs you.
+
+The technology isn't perfect. But it's good enough to be useful today. And if you can build a system that runs 80% of your operations while you sleep... that's worth exploring.
+
+---
+
+## The bottom line
+
+Six weeks in, CivisExpat runs smoother than before. Response times are faster. Tasks don't get lost. Clients get updates without me manually sending them.
+
+And I'm not checking email every 20 minutes anymore.
+
+The autonomous CEO isn't science fiction. It's not even particularly hard to set up. The hard part is designing the system, defining the workflows, and being honest about what humans need to handle versus what machines can take over.
+
+If you're running a service business and you're the bottleneck — let's talk. The robots are ready to work.
+
+*(CivisExpat helps expats relocate to Debrecen. Bender Online Media runs the operations.)*
