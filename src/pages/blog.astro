@@ -1,6 +1,7 @@
 ---
 import '../styles/article-list.css';
 
+import { Image } from 'astro:assets';
 import { getCollection } from "astro:content";
 import Card from "../components/Card.astro";
 import Icon from "../components/Icon.astro";
@@ -42,14 +43,21 @@ const tags = posts.flatMap((post) => post.data.tags.map((tag) => tag.id));
 			</div>
 			<div class="content-container">
 				{posts.sort((a, b) => b.data.createdAt.getTime() - a.data.createdAt.getTime()).map((post) => (
-					<a href={`/blog/${post.id}`} class="post-container" data-tags={post.data.tags.map((tag) => tag.id).join(",")}>
-						<div class="post-header">
-							<h3>{post.data.title}</h3>
-							<span class="post-date">{post.data.createdAt.toLocaleDateString()}</span>
-						</div>
-						<span>{post.data.description}</span>
-						<div class="post-footer">
-							<AuthorBadge author={post.data.author ?? 'szabcsee'} />
+					<a href={`/blog/${post.id}`} class="post-container post-container-with-image" data-tags={post.data.tags.map((tag) => tag.id).join(",")}>
+						{post.data.image && (
+							<div class="post-thumbnail">
+								<Image src={post.data.image} alt={post.data.title} width={160} height={100} />
+							</div>
+						)}
+						<div class="post-content">
+							<div class="post-header">
+								<h3>{post.data.title}</h3>
+								<span class="post-date">{post.data.createdAt.toLocaleDateString()}</span>
+							</div>
+							<span class="post-description">{post.data.description}</span>
+							<div class="post-footer">
+								<AuthorBadge author={post.data.author ?? 'szabcsee'} />
+							</div>
 						</div>
 					</a>
 				))}

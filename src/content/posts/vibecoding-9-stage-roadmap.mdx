@@ -1,0 +1,161 @@
+---
+title: "The 9 Stages of Vibecoding (According to Tim)"
+description: "Tim Ruscica dropped a banger about building apps with AI. Here's my take on why most people get it catastrophically wrong."
+image: "../assets/vibecoding-roadmap.png"
+createdAt: 2026-04-28
+draft: false
+author: szabcsee
+tags:
+  - ai
+  - development
+  - guide
+---
+
+## Tim Ruscica knows what's up
+
+So I watched [Tim Ruscica's latest video](https://www.youtube.com/watch?v=xEr0hRbK_Xo) about building apps with AI. And I have to say — it's the best framework I've seen for understanding why vibe coding is either the greatest thing ever or a complete disaster. The difference, according to Tim, is whether you have a process.
+
+And he's right. Obviously he's right. I've been hacking away at 2am with Claude Code, feeling like a god, only to wake up to a project that looks like a fever dream had a baby with spaghetti code. No process. Just vibes.
+
+So let's break down the nine stages, because you need to know this.
+
+---
+
+## Stage 1: Define What You Actually Want
+
+Three questions. That's it.
+
+**What problem does your app solve?** One sentence. If you can't say it, you can't build it.
+
+**Who is it for?** You? Your mom? Doctors? Students? The answer changes everything.
+
+**What does "done" mean?** When you can upload a PDF and get AI analysis? When 100 users show up? When it runs on localhost or when it's deployed globally? 
+
+Tim's point: if you don't know what the finished product looks like, the AI will go rogue. And they do. They absolutely do. I've seen Claude build entire admin panels nobody asked for because I wasn't specific enough.
+
+---
+
+## Stage 2: Plan Like You're Getting Paid (Even If You're Not)
+
+Now comes the part nobody wants to do: **planning**.
+
+Wireframes. Feature lists. Tech stack decisions. 
+
+Tim suggests doing this *with* an AI — have it ask you questions back and forth for 30-45 minutes. Let it poke holes in your ideas. Question your decisions. 
+
+This sounds like a lot of work. It is. But it's the difference between building the wrong thing fast and building the right thing.
+
+> The AI won't judge you for changing your mind at this stage. It will absolutely judge you later when you've built a social media platform for influencers and you only wanted a landing page.
+
+---
+
+## Stage 3: Set a Timeline You Will Actually Follow
+
+| Day | Milestone |
+|-----|-----------|
+| Day 1 | Everything specced, wired, planned |
+| Day 2-3 | Core MVP running locally |
+| Week 1 | Main features built |
+| Month 1 | Polish, test, real users |
+
+Tim keeps it real: this isn't corporate project management, it's just having *some* structure so you don't end up with a "I'll just clean this up later" situation that lasts six months.
+
+---
+
+## Stage 4: Pick Your Weapon
+
+Two paths:
+
+**No-code builders** — V0, Lovable, Bolt, Mokka, Replit. Great for prototyping. Great if you're not technical. Limitation: they get painful when your project grows up.
+
+**AI-assisted coding** — Cursor, Claude Code, Codex. More complex, gives you full control. You can actually read the code. You know what happens when things break.
+
+The trap: choosing based on aspirational you, not actual you. If you can't read code, Cursor will just generate mysteries for you.
+
+---
+
+## Stage 5: Set Up Your Environment
+
+*(If you went the self-coded route)*
+
+- Git. Always git.
+- Node.js (probably)
+- Your AI editor of choice
+- MCP servers — connect your editor to GitHub, Notion, Google Drive, Flux for image generation
+- Long-term memory files (CLAUDE.md, CURSOR.md) so you're not explaining your project every single session
+
+---
+
+## Stage 6: Pick Your Budget & Model
+
+| Model | Good for | Cost |
+|-------|----------|------|
+| Opus 4.6 | Building from scratch | Expensive (~$200/mo Max) |
+| GPT 5.4 / Codex | Debugging, complex stuff | High |
+| Mini Max M2.7 | Coding tasks | Cheap |
+| Sonnet | General purpose | Moderate |
+
+Tim's combo: Opus 4.6 + Codex + Mini Max for smaller tasks. 
+
+Me? I use Mini Max for most things. Opus burns through credits faster than I can say "scope creep."
+
+---
+
+## Stage 7: Build. Slowly.
+
+Here's where everyone fails — me included.
+
+**The five-step rule:**
+
+1. Get ONE feature working completely before moving on
+2. Commit to git every major change
+3. Test every piece before you move on
+4. Give AI small scoped tasks, NOT the entire spec at once
+5. Read the code
+
+> The least amount of code in your project, the better. More code = more bugs, harder to maintain, harder to understand.
+
+Tim's MVP philosophy: validate before scaling. Build the smallest thing that proves your concept. THEN add features.
+
+This is the opposite of what I usually do. I have seventeen unfinished projects that started as "simple side things."
+
+---
+
+## Stage 8: CI/CD — The Thing Nobody Does
+
+This is where hobby projects become **real applications**.
+
+- Automated tests (at minimum for auth and core features)
+- GitHub Actions for continuous deployment
+- Don't run 30 terminal commands manually every time you push
+
+Tim's quote: *"Most vibecoders don't even know this exists and completely skip it. Don't skip it."*
+
+I've skipped it on every project. Every single one. This is embarrassing to admit but here we are.
+
+---
+
+## Stage 9: Deploy & Monitor
+
+Questions you need to answer:
+- How are users navigating the app?
+- What bugs are they hitting?
+- Do you have proper versioning?
+
+Monitoring. Logging. Analytics. Error tracking. 
+
+Tim puts it well: the most difficult part of software development isn't building the app — it's maintaining it and making sure it doesn't break in the future.
+
+---
+
+## The Real Takeaway
+
+Tim's video is a reality check. Building with AI is either:
+- The easiest thing you've ever done, OR
+- A complete nightmare
+
+The difference is process. And discipline. And resisting the urge to add "just one more feature."
+
+I'm going to try this framework on my next project. Probably the Rails HR app. Maybe I'll finally finish something.
+
+*Shoutout to Tim Ruscica — his [Boot.dev](https://boot.dev) code is actually good if you want to learn backend properly. Use code `techwithtim` for 25% off.*
