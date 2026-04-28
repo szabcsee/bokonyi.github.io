@@ -4,6 +4,7 @@ import '../styles/index.css';
 import ProfilePicture from '../assets/pfp.png';
 
 import Card from '../components/Card.astro';
+import AuthorBadge from '../components/AuthorBadge.astro';
 import Layout from '../layouts/Layout.astro';
 import ImageGlow from '../components/ImageGlow.astro';
 import Icon from '../components/Icon.astro';
@@ -104,6 +105,9 @@ function timeToRead(post: CollectionEntry<'posts'>): number {
 										<span>{post.data.createdAt.toLocaleDateString()}</span>
 										<span>/</span>
 										<span>{timeToRead(post)} min read</span>
+									</div>
+									<div class="post-hero-author">
+										<AuthorBadge author={post.data.author ?? 'szabcsee'} size="md" />
 									</div>
 								</div>
 							</div>

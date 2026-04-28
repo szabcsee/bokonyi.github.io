@@ -282,6 +282,15 @@
   width: fit-content;
 }
 
+.post-hero-author {
+  background: #ffffff;
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+  padding: .125rem .5rem;
+  width: fit-content;
+  margin-top: .25rem;
+}
+
 @media screen and (max-width: 640px) {
   .latest-posts-grid {
     grid-template-columns: 1fr;
@@ -308,6 +317,11 @@
     background-color: transparent;
     padding: 0;
     color: white;
+  }
+
+  .post-hero-author {
+    background-color: transparent;
+    padding: 0;
   }
 
   .post-hero-card .article-image {
