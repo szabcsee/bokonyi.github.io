@@ -284,6 +284,7 @@
 
 .post-hero-author {
   margin-top: .25rem;
+  background: transparent;
 }
 
 @media screen and (max-width: 640px) {
