@@ -2,6 +2,7 @@
 import '../../styles/index.css';
 
 import ProfilePicture from '../../assets/pfp.png';
+import HeroPhoto from '../../assets/hero-image.png';
 
 import Card from '../../components/Card.astro';
 import Layout from '../../layouts/Layout.astro';
@@ -23,21 +24,21 @@ export function getStaticPaths() {
 const { lang } = Astro.params as { lang: keyof typeof languages };
 const t = (await import('../../i18n/ui')).ui[lang as Lang];
 
+const aboutSlug = lang === 'hu' ? 'about-hu' : 'about';
+
 const [posts, about, workExperience, quickInfo, socials] = await Promise.all([
 	getCollection('posts', (post) => post.data.draft !== true && (post.data.lang ?? 'en') === lang),
-	getEntry('other', 'about'),
-	getCollection('workExperience'),
-	getCollection('quickInfo'),
-	getCollection('socials')
+	getEntry('other', aboutSlug),
+	getCollection('workExperience', (entry) => (entry.data.lang ?? 'en') === lang),
+	getCollection('quickInfo', (entry) => (entry.data.lang ?? 'en') === lang),
+	getCollection('socials', (entry) => (entry.data.lang ?? 'en') === lang)
 ]);
 
 // biome-ignore lint/style/noNonNullAssertion: Should always be defined.
 const { Content: About } = await render(about!);
 
-// Get sorted posts for display
 const sortedPosts = posts.sort((a, b) => b.data.createdAt.getTime() - a.data.createdAt.getTime());
 
-// Calculate reading time
 function timeToRead(post: CollectionEntry<'posts'>): number {
 	const numWords = (post.body || "")
 		.replace(/.*\[(.*?)\].*/gm, "$1")
@@ -47,6 +48,17 @@ function timeToRead(post: CollectionEntry<'posts'>): number {
 	const numCodeblocks = post.body?.match(/```/g)?.length || 0;
 	return Math.ceil(numWords / 200) + Math.ceil(numImages / 6) + Math.ceil(numCodeblocks / 3);
 }
+
+const tinker: Array<{ key: keyof typeof t; icon: string }> = [
+	{ key: 'home.tinker.designWeb', icon: 'paintbrush' },
+	{ key: 'home.tinker.designPaper', icon: 'pen-tool' },
+	{ key: 'home.tinker.website', icon: 'monitor' },
+	{ key: 'home.tinker.app', icon: 'smartphone' },
+	{ key: 'home.tinker.automate', icon: 'workflow' },
+	{ key: 'home.tinker.print3d', icon: 'box' },
+	{ key: 'home.tinker.drone', icon: 'plane' },
+	{ key: 'home.tinker.ai', icon: 'sparkles' },
+];
 ---
 
 <Layout
@@ -55,9 +67,42 @@ function timeToRead(post: CollectionEntry<'posts'>): number {
 	pagefindIgnore
 	lang={lang}
 >
+	<div class="home-fullwidth" slot="full-width">
+		<section class="hero card-anim">
+			<div class="hero-copy">
+				<p class="hero-eyebrow">{name}</p>
+				<h1 class="hero-headline">{t['home.hero.greeting']}</h1>
+				<p class="hero-tagline">{t['home.hero.tagline']}</p>
+			</div>
+			<div class="hero-art" aria-hidden="true">
+				<div class="hero-photo">
+					<ImageGlow quality={100} width={320} height={320} src={HeroPhoto} alt="" loading="eager" />
+				</div>
+				<div class="hero-robot">
+					<Robot />
+				</div>
+			</div>
+		</section>
+
+		<section class="tinker card-anim" style="animation-delay: 80ms">
+			<div class="header-container tinker-header">
+				<Icon type="lucide" name="wrench" width={24} height={24} class="glow-icon" />
+				<h2>{t['home.tinker.heading']}</h2>
+			</div>
+			<ul class="tinker-grid">
+				{tinker.map((item) => (
+					<li class="tinker-tile">
+						<Icon type="lucide" name={item.icon as any} width={28} height={28} class="glow-icon" />
+						<span>{t[item.key]}</span>
+					</li>
+				))}
+			</ul>
+		</section>
+	</div>
+
 	<div class="layout-grid-left" slot="left">
 		<Card class="flex-col-card card-anim" style="animation-delay: 0ms">
-			<ImageGlow quality={100} width={120} height={120} src={ProfilePicture} alt="Louis looking out of a window" loading='eager' />
+			<ImageGlow quality={100} width={120} height={120} src={ProfilePicture} alt={name} loading="eager" />
 			<h2>{name}</h2>
 			<ul class="overview-list">
 				{quickInfo.map((info) => (
@@ -67,9 +112,6 @@ function timeToRead(post: CollectionEntry<'posts'>): number {
 					</li>
 				))}
 			</ul>
-		</Card>
-		<Card class="card-anim robot-card" style="animation-delay: 80ms">
-			<Robot />
 		</Card>
 		<Card class="card-anim" style="animation-delay: 160ms">
 			<h3 class="no-mt">{lang === 'hu' ? 'Social media' : 'Socials'}</h3>
@@ -86,15 +128,6 @@ function timeToRead(post: CollectionEntry<'posts'>): number {
 		</Card>
 	</div>
 	<div class="layout-grid-right" slot="right">
-		<Card class="card-anim" style="animation-delay: 50ms">
-			<div class="header-container">
-				<Icon type='lucide' name="user" width={24} height={24} class='glow-icon' />
-				<h2>{lang === 'hu' ? 'Rólam' : 'About me'}</h2>
-			</div>
-			<div class="prose">
-				<About />
-			</div>
-		</Card>
 		<Card class="card-anim" style="animation-delay: 130ms">
 			<div class="header-container">
 				<Icon type='lucide' name="rss" width={24} height={24} class='glow-icon' />
@@ -120,6 +153,16 @@ function timeToRead(post: CollectionEntry<'posts'>): number {
 						</Card>
 					</a>
 				))}
+			</div>
+		</Card>
+
+		<Card class="card-anim" style="animation-delay: 50ms">
+			<div class="header-container">
+				<Icon type='lucide' name="user" width={24} height={24} class='glow-icon' />
+				<h2>{lang === 'hu' ? 'Rólam' : 'About me'}</h2>
+			</div>
+			<div class="prose">
+				<About />
 			</div>
 		</Card>
 

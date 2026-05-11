@@ -1,34 +1,52 @@
 ---
 import Icon from "./Icon.astro";
 import { name } from 'spectre:globals';
-import { getLangFromUrl, languages, defaultLang } from '../i18n/ui';
+import { getLangFromUrl, languages, defaultLang, ui } from '../i18n/ui';
+import type { Lang } from '../i18n/ui';
+
+interface Props {
+  alternates?: Partial<Record<'en' | 'hu', string>>;
+}
 
 const path = Astro.url.pathname;
 const currentLang = getLangFromUrl(Astro.url);
+const t = ui[currentLang as Lang];
 
 function removeLangFromPath(pathname: string): string {
   return pathname.replace(/^\/(en|hu)/, '') || '/';
 }
 
 const currentPathWithoutLang = removeLangFromPath(path);
+
+function urlForLang(lang: string): string {
+  const explicit = Astro.props.alternates?.[lang as 'en' | 'hu'];
+  if (explicit) return explicit;
+  // Untranslated post detail: send to that language's blog index instead of a 404.
+  if (/^\/blog\/[^/]+\/?$/.test(currentPathWithoutLang)) return `/${lang}/blog`;
+  return `/${lang}${currentPathWithoutLang}`;
+}
+
+const searchPlaceholder = currentLang === 'hu' ? 'Keresés (Ctrl+K)' : 'Search (Ctrl+K)';
+const searchPlaceholderShort = currentLang === 'hu' ? 'Keresés' : 'Search';
+const noResultsLabel = t['common.noResults'];
 ---
 
 <nav>
   <a class="site-title" href={`/${currentLang}`}>{name}</a>
   <ul>
     <li>
-      <a href={`/${currentLang}/blog`} class:list={{ active: path.startsWith(`/${currentLang}/blog`) }}>Blog</a>
+      <a href={`/${currentLang}/blog`} class:list={{ active: path.startsWith(`/${currentLang}/blog`) }}>{t['nav.blog']}</a>
     </li>
     <li class="nav-separator">/</li>
     <li>
-      <input id="search" type="text" placeholder="Search (Ctrl+K)" />
+      <input id="search" type="text" placeholder={searchPlaceholder} />
       <div id="search-results"></div>
     </li>
     <li class="nav-separator">/</li>
     <li class="lang-switch">
       {Object.entries(languages).map(([lang, label]) => (
         <a
-          href={`/${lang}${currentPathWithoutLang}`}
+          href={urlForLang(lang)}
           class:list={{ active: lang === currentLang }}
           lang={lang}
         >
@@ -42,7 +60,8 @@ const currentPathWithoutLang = removeLangFromPath(path);
     <Icon type="lucide" name="x" width={24} height={24} class="menu-open" />
   </button>
 </nav>
-<script is:inline>
+<script is:inline define:vars={{ navI18n: { search: searchPlaceholder, searchShort: searchPlaceholderShort, noResults: noResultsLabel } }}>
+  window.__navI18n = navI18n;
   const searchElement = document.querySelector('#search');
   const results = document.querySelector('#search-results');
   const navToggle = document.querySelector('.mobile-nav-toggle');
@@ -138,7 +157,7 @@ const currentPathWithoutLang = removeLangFromPath(path);
       i++;
 
       const data = await result.data();
-      
+
       searchResultHtml += `
         <a href="${data.url}">
           <h3 class="no-mt">${data.meta.title}</h3>
@@ -149,7 +168,7 @@ const currentPathWithoutLang = removeLangFromPath(path);
     }
 
     if (search.results.length === 0 && e.target.value.length > 0) {
-      results.innerHTML = '<p style="margin-top: 0;">No results found</p>';
+      results.innerHTML = `<p style="margin-top: 0;">${window.__navI18n.noResults}</p>`;
     } else {
       results.innerHTML = searchResultHtml;
     }
@@ -164,9 +183,9 @@ const currentPathWithoutLang = removeLangFromPath(path);
 
   const handleTabletChange = () => {
     if (window.matchMedia('(max-width: 640px)').matches) {
-      searchElement.placeholder = 'Search';
+      searchElement.placeholder = window.__navI18n.searchShort;
     } else {
-      searchElement.placeholder = 'Search (Ctrl+K)';
+      searchElement.placeholder = window.__navI18n.search;
     }
   }
 

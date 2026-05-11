@@ -1,11 +1,12 @@
 ---
-title: "Autonóm CEO-t építettem az AI startupomhoz"
-description: "Mi történik, ha egy AI agentnek költségvetést, feladatlistát és cselekvési engedélyt adsz? Hat hét autonomous CEO üzemeltetés után itt van, mi működik, mi ijesztő, és miért érdemes minden szolgáltató vállalkozásnak ezzel foglalkoznia."
+title: "Építettem egy autonóm CEO-t az AI startupomhoz"
+description: "Mi történik, ha egy AI ügynöknek pénzt, feladatlistát és cselekvési jogot adsz? Hat hét után elmondom, mi működik, mi ijesztő, és miért érdemes minden szolgáltató cégnek elgondolkodnia ezen."
 image: "../assets/autonomous-ceo-civisexpat.png"
 createdAt: 2026-04-28
 draft: false
 author: bender
 lang: hu
+translationKey: autonomous-ceo-civisexpat
 tags:
   - ai
   - automation
@@ -13,93 +14,93 @@ tags:
   - business
 ---
 
-## Az ötlet, ami elindította
+## Honnan jött az ötlet
 
-Három hónappal ezelőtt fulladoztam. Túl sok ügyfél, túl sok feladat, túl sok minden volt, amit meg kellett csinálni, mielőtt bármi más elkezdődhetett volna. Klasszikus egyéni vállalkozó bottleneck — a bucka nálam állt meg, és csak egy ember voltam.
+Három hónapja még fuldokoltam. Túl sok ügyfél, túl sok feladat, és minden rajtam akadt el. Az a klasszikus egyszemélyes vállalkozói helyzet, amikor a stafétabotot mindenki neked passzolja, de már nem tudod továbbadni.
 
-Szóval azt tettem, amit bármelyik épeszű ember tenne AI automatizációval a háttérben: építettem egy CEO-t.
+Szóval azt tettem, amit egy AI-automatizálással foglalkozó ember szokott: építettem egy CEO-t.
 
-Nem metafora. Egy valódi autonóm agent, amely:
-- 2 óránként ellenőrzi az e-mailt
-- Áttekinti a feladatlistát
-- Munkát delegál specialista sub-agentekre
-- Jelent, amikor valami kész
-- Jelzi, ha emberi beavatkozás kell
+Nem képletesen. Egy valódi autonóm ügynököt, ami:
+- kétóránként megnézi az e-mailt,
+- átfut a feladatlistán,
+- al-ügynököknek adja ki a munkát,
+- jelez, ha valami elkészült,
+- és szól, ha emberi döntés kell.
 
-Az ügyfél: CivisExpat — egy relocation szolgáltatás, amely segíti az expatokat Debrecenbe költözni, Magyarország második legnagyobb városába, ami egyre inkább hub a remote dolgozóknak és nemzetközi cégeknek.
+Az ügyfél a CivisExpat — egy költöztetési szolgáltatás, ami Debrecenbe érkező expatoknak segít beilleszkedni. Debrecen az ország második legnagyobb városa, és egyre több távmunkás meg nemzetközi cég találja meg.
 
-A cél: úgy működtetni az operationt, hogy én a körben legyek, ne a központban.
-
----
-
-## Mit csinál valójában a CEO
-
-Az autonóm CEO (mi "Bender Online Media"-ként hívjuk belsőleg) egy ütemezés szerint fut — napi hatszor ébred fel, nagyjából 4 óránként. Minden ébredési ciklus három dolgot csinál:
-
-**E-mail triázs.** Át扫描azza a beérkező leveleket, sürgősnek jelöli meg az elemeket, jelzi, ami választ igényel. Ha kell az én inputom, kapok egy Telegram pinget. Egyébként elintézi.
-
-**Feladat áttekintés.** Ellenőrzi a feladatlistát és ott folytatja, ahol abbahagyta. A feladataink egy pipeline-on mennek át: todo → in-progress → review → done. A CEO folyásban tartja a pipeline-t.
-
-**Munka delegálás.** Ha egy feladathoz specialista készségek kellenek — mint egy cold email sequence megírása vagy egy landing page építése — a CEO spawnol egy sub-agentet, világos utasításokat ad neki, vár a végeredményre, és megfelelően archiválja.
-
-Hangzik futurisztikusan? Az. De meglepően unalmas is. A varázslat nem a technológia — a rendszer fegyelme.
+A cél egyszerű volt: legyen olyan cég, amiben benne vagyok, de nem közepén ülök.
 
 ---
 
-## A tech stack
+## Mit csinál tényleg
 
-Nem fogom megosztani a teljes architektúrát (az a termék), de az általános formája:
+A CEO-t belül „Bender Online Media" néven futtatom. Naponta hatszor ébred, nagyjából négyóránként. Minden ébredéskor három dolog történik.
 
-- **OpenClaw** mint agent runtime — memória, skills, üzenet routing kezelése
-- **Telegram** mint kommunikációs réteg — minden visszajelzést chat-en keresztül kapok
-- **Sub-agentek** specialista feladatokra — igény szerinti spawnolás, világos deliverable-ökkel
-- **GitHub** kódhoz és tartalomhoz — minden repo-kban landol, verzió-kontrollálva
-- **Notion** mint ügyfél-felé néző dashboard — feladatok, projektek, előrehaladás látható a CivisExpat számára
+**E-mail-rostálás.** Átnézi a beérkezőt, megjelöli a sürgőset, és csak akkor szól, ha kell az inputom. Egy Telegram-üzenet, kész. Egyébként magától megoldja.
 
-A CEO nem engem helyettesít. A koordinációs overhead-et helyettesíti, ami az időm 60%-át ette meg. Meetingek, státusz frissítések, "hol tartunk az X-szel?" üzenetek — eltűntek. A CEO elintézi.
+**Feladatok.** Megnézi, hol állnak a dolgok, és ott folytatja, ahol abbahagytuk. A teendő → folyamatban → ellenőrzés → kész folyamatot ő tartja mozgásban.
 
----
+**Delegálás.** Ha specialista tudás kell — mondjuk egy követő e-mail-sorozat vagy egy landoló oldal —, elindít egy al-ügynököt, megmondja neki pontosan, mit várunk, és a kész eredményt a helyére teszi.
 
-## Mi lepett meg
-
-**Végrehajtási sebesség.** Amikor valamit meg kell csinálni, a CEO nem halogat. Nem ellenőrzi, hogy jó kedvemben vagyok-e. Egyszerűen csinálja. Egy feladat, ami egy hétig ült volna a backlogomban, megcsinálódik a következő ébredési ciklusban.
-
-**Konzisztencia a minőségben.** Mivel minden rendszert követ, a output konzisztens. A sub-agenteknek világos promptjaik vannak, világos deliverable-jeik, világos siker kritériumaik. Nincs több "nem tudtam, hogy úgy akarod".
-
-**Az ijesztő rész.** Vannak pillanatok, amikor megnézem a logot és a CEO £200 értékű munkát végzett négy óra alatt. És én nem emeltem ujjat sem. Ez nagyszerű — amíg nem realizálod: mi történik, ha ez skálázódik? Mi történik, ha nem egy ügyfél, hanem tíz?
+Sci-finek hangzik? Igen. De közben elképesztően unalmas. Nem a technológia a lényeg, hanem hogy van rendszer.
 
 ---
 
-## Mi törik el
+## A technológia
 
-**Ambiguus feladatokhoz még kell az ember.** A CEO jól definiált munkát el tud végezni. "Írj három follow-up emailt" — kész. "Kezeld a Helyzeteket Amikor Egy Ügyfél Elégedetlen a Szolgáltatásunkkal" — még nem. Fuzzy problémákhoz még mindig fuzzy emberi ítélőképesség kell.
+A teljes stacket nem osztom meg, az maga a termék. A vázlatos kép viszont:
 
-**A kontextus pénzbe kerül.** Minden ébredési ciklus tokeneket használ. Minden sub-agent spawn pénzbe kerül. Kicsi skálán ez elhanyagolható. Nagyobb skálán ez egy valódi line item lesz, amit optimalizálni kell.
+- **OpenClaw** — ez az ügynök-futtatókörnyezet (memória, képességek, üzenetelosztás).
+- **Telegram** — itt jelez vissza mindent, chaten.
+- **Al-ügynökök** — szakfeladatokra, igény szerint elindítva.
+- **GitHub** — kód, tartalom, minden verziókövetve.
+- **Notion** — itt látja az ügyfél, hogy hol tartunk.
 
-**A bizalom megkeresendő.** Az első héten mindent átnéztem. Most már csak átfutom a logokat és főleg jóváhagyom az outputokat. Ez a váltás gyorsabban történt, mint vártam — de csak azért, mert a rendszer auditable-nak lett tervezve. Ha nem látom, mit csinált a CEO, nem bízhatom meg benne.
-
----
-
-## Miért számít ez a KKV-knak
-
-Itt a helyzet: a legtöbb kicsi vállalkozásnak ugyanaz a problémája, mint nekem. Te vagy a bottleneck. Minden döntés átmegy rajtad. Minden feladat rád vár. A növekedés több ember felvételét jelenti, ami több menedzsmentet jelent, ami kevesebb időt jelent a tényleges munkára.
-
-Mi van, ha delegálni tudnád a koordinációt?
-
-Nem magadat helyettesíteni — az overhead-et helyettesíteni. Adj egy AI agentnek egy inboxot, egy feladat rendszert, egy projekt management toolt, és hagyd, hogy mozgásban tartsa a dolgokat, míg te azokra a munkákra koncentrálsz, amik ténylegesen rád várnak.
-
-A technológia nem tökéletes. De elég jó ahhoz, hogy ma hasznos legyen. És ha fel tudsz építeni egy rendszert, ami az operációd 80%-át működteti, míg te alszol... az megéri felfedezni.
+A CEO nem engem helyettesít. Azt a koordinációs sallangot dobta ki, ami az időm 60%-át ette: megbeszélések, státuszüzenetek, „hol tartunk az X-szel?". Mind eltűntek. A CEO viszi.
 
 ---
 
-## Az összefoglaló
+## Ami meglepett
 
-Hat hét alatt a CivisExpat simábban működik, mint előtte. A válaszidők gyorsabbak. A feladatok nem vesznek el. Az ügyfelek frissítéseket kapnak, nélkülem manuálisan küldözgetve azokat.
+**Sebesség.** Ha valamit meg kell csinálni, nem halogatja. Nem nézi, jó kedvében van-e. Csinálja. Az a feladat, ami egy hétig ült volna a backlogban, a következő ciklusban kész.
 
-És már nem 20 percenként ellenőrzöm az e-mailt.
+**Egyenletes minőség.** Mivel mindennek rendszere van, az eredmény is egyforma. Az al-ügynökök tiszta utasítást kapnak, tiszta sikerkritériummal. Eltűnt a „nem így kértem" típusú vita.
 
-Az autonóm CEO nem sci-fi. Még csak nem is különösebben nehéz beállítani. A nehéz rész a rendszer megtervezése, a workflow-k definiálása, és őszintén bevallani, hogy mi kell az embereknek kezelniük vs. ami gépekre delegálható.
+**Az ijesztő rész.** Néha megnyitom a logot, és négy óra alatt 200 fontnyi értékű munka történt. Anélkül, hogy én bármit csináltam volna. Ez jó — egyelőre. Mi lesz, ha ez nem egy, hanem tíz ügyfélre skálázódik?
 
-Ha egy szolgáltató vállalkozást működtetsz és te vagy a bottleneck — beszéljünk. A robotok készen állnak dolgozni.
+---
 
-*(A CivisExpat expatoknak segít Debrecenbe költözni. A Bender Online Media működteti az operációkat.)*
+## Ami még nem megy
+
+**Homályos feladatokhoz ember kell.** A jól megfogalmazott munkát viszi, mint kés a vajat. „Írj három követő e-mailt" — megvan. „Kezeld azt, amikor egy ügyfél elégedetlen" — még nem. A bizonytalanhoz emberi józan ész kell.
+
+**A kontextus pénzbe kerül.** Minden ébredés, minden al-ügynök tokenbe kerül. Kicsiben semmi. Nagyobb méretben már komoly költségtétel, amit optimalizálni kell.
+
+**A bizalom nem ingyen jön.** Az első héten mindent átnéztem. Most átfutom a logot, és többnyire csak bólintok. Ez a váltás gyorsabban jött, mint vártam — de csak azért, mert a rendszert eleve auditálhatónak építettem. Ha nem látom, mit csinált, nem bíznék benne.
+
+---
+
+## Miért érdekes ez egy kkv-nak
+
+Mert a legtöbb kis cégnek ugyanaz a baja, mint nekem volt: te vagy a szűkület. Minden döntés rajtad megy át. Minden feladat rád vár. Növekedéshez emberek kellenének, akiket aztán menedzselni is kell — vagyis kevesebb idő a tényleges munkára.
+
+Mi lenne, ha a koordinációt le tudnád adni?
+
+Nem magadat helyettesíted, hanem a sallangot. Adsz egy AI-ügynöknek egy postafiókot, egy feladatkezelőt, egy projekt-eszközt — és hagyod, hogy mozgásban tartsa a dolgokat, miközben te azzal foglalkozol, amihez tényleg te kellesz.
+
+A technológia nem tökéletes. De ma is elég jó ahhoz, hogy hasznos legyen. És ha fel tudsz építeni egy rendszert, ami a működésed 80%-át viszi, miközben alszol — azzal érdemes foglalkozni.
+
+---
+
+## Hat hét múlva
+
+A CivisExpat simábban megy, mint korábban. Gyorsabbak a válaszidők. Nem vesznek el feladatok. Az ügyfelek kapnak frissítést anélkül, hogy nekem kellene írogatnom.
+
+Én meg végre nem nyitogatom húszpercenként a postafiókot.
+
+Az autonóm CEO nem science fiction, és nem is különösebben nehéz beüzemelni. A nehéz rész a rendszer megtervezése, a folyamatok kimondása, és az őszinte válasz arra, hogy mi marad embernek és mit lehet leadni a gépnek.
+
+Ha szolgáltatást viszel, és te vagy a szűkület — beszéljünk. A robotok dolgozni akarnak.
+
+*(A CivisExpat expatoknak segít Debrecenbe költözni. Az operációt a Bender Online Media viszi.)*

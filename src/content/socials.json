@@ -1,35 +1,58 @@
 [
   {
     "id": 1,
-    "icon": {
-      "type": "lucide",
-      "name": "github"
-    },
+    "lang": "en",
+    "icon": { "type": "lucide", "name": "github" },
     "text": "GitHub",
     "link": "https://github.com/szabcsee"
-  }, {
+  },
+  {
     "id": 2,
-    "icon": {
-      "type": "lucide",
-      "name": "twitter"
-    },
+    "lang": "en",
+    "icon": { "type": "lucide", "name": "twitter" },
     "text": "Twitter",
     "link": "https://twitter.com/szabcsee"
-  }, {
+  },
+  {
     "id": 3,
-    "icon": {
-      "type": "lucide",
-      "name": "linkedin"
-    },
+    "lang": "en",
+    "icon": { "type": "lucide", "name": "linkedin" },
     "text": "LinkedIn",
     "link": "https://linkedin.com/in/szabolcsbokonyi"
-  }, {
+  },
+  {
     "id": 4,
-    "icon": {
-      "type": "lucide",
-      "name": "globe"
-    },
+    "lang": "en",
+    "icon": { "type": "lucide", "name": "globe" },
     "text": "my company",
+    "link": "https://digitalyogis.com"
+  },
+  {
+    "id": 11,
+    "lang": "hu",
+    "icon": { "type": "lucide", "name": "github" },
+    "text": "GitHub",
+    "link": "https://github.com/szabcsee"
+  },
+  {
+    "id": 12,
+    "lang": "hu",
+    "icon": { "type": "lucide", "name": "twitter" },
+    "text": "Twitter",
+    "link": "https://twitter.com/szabcsee"
+  },
+  {
+    "id": 13,
+    "lang": "hu",
+    "icon": { "type": "lucide", "name": "linkedin" },
+    "text": "LinkedIn",
+    "link": "https://linkedin.com/in/szabolcsbokonyi"
+  },
+  {
+    "id": 14,
+    "lang": "hu",
+    "icon": { "type": "lucide", "name": "globe" },
+    "text": "a cégem",
     "link": "https://digitalyogis.com"
   }
 ]

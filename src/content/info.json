@@ -1,19 +1,26 @@
 [
   {
     "id": 1,
-    "icon": {
-      "type": "lucide",
-      "name": "mail"
-    },
+    "lang": "en",
+    "icon": { "type": "lucide", "name": "mail" },
     "text": "szabi (at) domain above com"
   },
   {
     "id": 2,
-    "icon": {
-      "type": "lucide",
-      "name": "earth"
-    },
-    "type": "lucide",
+    "lang": "en",
+    "icon": { "type": "lucide", "name": "earth" },
     "text": "Budapest, Hungary"
+  },
+  {
+    "id": 11,
+    "lang": "hu",
+    "icon": { "type": "lucide", "name": "mail" },
+    "text": "szabi (kukac) a fenti domain com"
+  },
+  {
+    "id": 12,
+    "lang": "hu",
+    "icon": { "type": "lucide", "name": "earth" },
+    "text": "Budapest, Magyarország"
   }
 ]

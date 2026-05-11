@@ -52,7 +52,7 @@ const { Content } = await render(project);
 >
   <div class="left" slot="left">
     <Card class="toc-card">
-      <h2 class="no-mt">Info</h2>
+      <h2 class="no-mt">{t['projects.info']}</h2>
       <ul class="overview-list">
         {project.data.info.map((info) => {
           const Tag = info.link ? 'a' : 'div';
@@ -83,7 +83,7 @@ const { Content } = await render(project);
       </div>
       <Content />
       <hr class="end-of-article" />
-      <a href={`/${lang}/projects`} class="block-link" data-pagefind-ignore>{t['common.backToBlog']}</a>
+      <a href={`/${lang}/projects`} class="block-link" data-pagefind-ignore>{t['projects.backToProjects']}</a>
     </Card>
   </article>
 </Layout>

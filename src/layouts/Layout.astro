@@ -18,6 +18,7 @@ interface Props {
 		updatedAt?: Date;
 	};
 	lang?: string;
+	alternates?: Partial<Record<'en' | 'hu', string>>;
 }
 
 const langFromUrl = getLangFromUrl(Astro.url);
@@ -25,6 +26,11 @@ const lang = Astro.props.lang ?? langFromUrl;
 const locale = getLocaleFromLang(lang as 'en' | 'hu');
 
 const pathnameWithoutLang = Astro.url.pathname.replace(/^\/(en|hu)/, '') || '/';
+const alternates = Astro.props.alternates ?? {
+	en: `/en${pathnameWithoutLang}`,
+	hu: `/hu${pathnameWithoutLang}`,
+};
+const xDefault = alternates.en ?? alternates.hu ?? `/en${pathnameWithoutLang}`;
 ---
 
 <!DOCTYPE html>
@@ -44,10 +50,10 @@ const pathnameWithoutLang = Astro.url.pathname.replace(/^\/(en|hu)/, '') || '/';
 
 		<link rel="canonical" href={Astro.site ? `${Astro.site}${Astro.url.pathname}` : undefined} />
 
-		<!-- Hreflang for SEO — both language versions -->
-		<link rel="alternate" hreflang="en" href={`/en${pathnameWithoutLang}`} />
-		<link rel="alternate" hreflang="hu" href={`/hu${pathnameWithoutLang}`} />
-		<link rel="alternate" hreflang="x-default" href={`/en${pathnameWithoutLang}`} />
+		<!-- Hreflang for SEO — only emit links to translations that actually exist -->
+		{alternates.en && <link rel="alternate" hreflang="en" href={alternates.en} />}
+		{alternates.hu && <link rel="alternate" hreflang="hu" href={alternates.hu} />}
+		<link rel="alternate" hreflang="x-default" href={xDefault} />
 
 		<meta name="og:title" content={Astro.props.title} />
 		{Astro.props.description && <meta name="og:description" content={Astro.props.description} />}
@@ -77,7 +83,8 @@ const pathnameWithoutLang = Astro.url.pathname.replace(/^\/(en|hu)/, '') || '/';
 	</head>
 	<body id="body-bg">
 		<main data-pagefind-ignore={Astro.props.pagefindIgnore}>
-			<Navbar />
+			<Navbar alternates={Astro.props.alternates} />
+			<slot name="full-width" />
 			<LayoutGrid>
 				<slot name="left" slot="left" />
 				<slot name="right" slot="right" />

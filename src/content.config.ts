@@ -21,6 +21,7 @@ const quickInfo = defineCollection({
     id: z.number(),
     icon: z.union([lucideIconSchema, simpleIconSchema]),
     text: z.string(),
+    lang: z.enum(['en', 'hu']).optional().default('en'),
   })
 });
 
@@ -31,6 +32,7 @@ const socials = defineCollection({
     icon: z.union([lucideIconSchema, simpleIconSchema]),
     text: z.string(),
     link: z.string().url(),
+    lang: z.enum(['en', 'hu']).optional().default('en'),
   })
 });
 
@@ -42,6 +44,7 @@ const workExperience = defineCollection({
     company: z.string(),
     duration: z.string(),
     description: z.string(),
+    lang: z.enum(['en', 'hu']).optional().default('en'),
   })
 });
 
@@ -64,6 +67,7 @@ const posts = defineCollection({
     image: image(),
     author: z.string().optional().default('szabcsee'),
     lang: z.enum(['en', 'hu']).optional().default('en'),
+    translationKey: z.string().optional(),
   })
 });
 

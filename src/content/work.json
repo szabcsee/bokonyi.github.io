@@ -1,9 +1,18 @@
 [
   {
     "id": 1,
+    "lang": "en",
     "duration": "2011 - present",
     "company": "digitalyogis Kft",
     "title": "CEO",
     "description": "Leading the company and overseeing all operations."
+  },
+  {
+    "id": 11,
+    "lang": "hu",
+    "duration": "2011 — napjainkig",
+    "company": "digitalyogis Kft.",
+    "title": "Ügyvezető",
+    "description": "A cég vezetése és a teljes működés felügyelete."
   }
 ]

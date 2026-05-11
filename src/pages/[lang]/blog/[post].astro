@@ -51,6 +51,20 @@ const t = (await import('../../../i18n/ui')).ui[lang as Lang];
 const { post } = Astro.props;
 
 const { Content, headings } = await render(post);
+
+const allPosts = await getCollection('posts', (p) => p.data.draft !== true);
+const key = post.data.translationKey;
+const alternates: Partial<Record<'en' | 'hu', string>> = {};
+if (key) {
+  for (const sibling of allPosts) {
+    if (sibling.data.translationKey === key) {
+      const siblingLang = (sibling.data.lang ?? 'en') as 'en' | 'hu';
+      alternates[siblingLang] = `/${siblingLang}/blog/${sibling.id}/`;
+    }
+  }
+} else {
+  alternates[(post.data.lang ?? 'en') as 'en' | 'hu'] = `/${lang}/blog/${post.id}/`;
+}
 ---
 
 <Layout
@@ -58,6 +72,7 @@ const { Content, headings } = await render(post);
   description={post.data.description}
   image={post.data.image}
   lang={lang}
+  alternates={alternates}
   article={{
     createdAt: post.data.createdAt,
     updatedAt: post.data.updatedAt,
@@ -65,7 +80,7 @@ const { Content, headings } = await render(post);
 >
   <div class="left" slot="left">
     <Card class="toc-card">
-      <h2 class="no-mt">Table of contents</h2>
+      <h2 class="no-mt">{t['post.toc']}</h2>
       <ol>
         <li class="toc-li">
           <a href={`#_top`} class="active">{post.data.title}</a>
