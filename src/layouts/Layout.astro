@@ -6,6 +6,7 @@ import Background from '../components/Background.astro';
 import Navbar from '../components/Navbar.astro';
 import LayoutGrid from '../components/LayoutGrid.astro';
 import { name, themeColor, twitterHandle } from 'spectre:globals';
+import { getLangFromUrl, getLocaleFromLang } from '../i18n/ui';
 
 interface Props {
 	title: string;
@@ -16,13 +17,18 @@ interface Props {
 		createdAt: Date;
 		updatedAt?: Date;
 	};
+	lang?: string;
 }
 
-const { title, description, image, pagefindIgnore, article } = Astro.props;
+const langFromUrl = getLangFromUrl(Astro.url);
+const lang = Astro.props.lang ?? langFromUrl;
+const locale = getLocaleFromLang(lang as 'en' | 'hu');
+
+const pathnameWithoutLang = Astro.url.pathname.replace(/^\/(en|hu)/, '') || '/';
 ---
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang={lang}>
 	<head>
 		<link rel="preload" href="/fonts/Geist.woff2" as="font" type="font/woff2" crossorigin="">
 		<link rel="preload" href="/fonts/GeistMono.woff2" as="font" type="font/woff2" crossorigin="">
@@ -32,27 +38,32 @@ const { title, description, image, pagefindIgnore, article } = Astro.props;
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<meta name="generator" content={Astro.generator} />
 
-		<title>{title}</title>
-		{description && <meta name="description" content={description} />}
+		<title>{Astro.props.title}</title>
+		{Astro.props.description && <meta name="description" content={Astro.props.description} />}
 		<meta name="theme-color" content={themeColor}>
 
-		<link rel="canonical" href={Astro.site} />
+		<link rel="canonical" href={Astro.site ? `${Astro.site}${Astro.url.pathname}` : undefined} />
 
-		<meta name="og:title" content={title} />
-		{description && <meta name="og:description" content={description} />}
-		<meta name="og:image" content={image?.src || '/img/og.png'} />
-		<meta name="og:url" content={Astro.site} />
-		{!article && <meta name="og:type" content="website" />}
-		<meta name="og:locale" content="en" />
+		<!-- Hreflang for SEO — both language versions -->
+		<link rel="alternate" hreflang="en" href={`/en${pathnameWithoutLang}`} />
+		<link rel="alternate" hreflang="hu" href={`/hu${pathnameWithoutLang}`} />
+		<link rel="alternate" hreflang="x-default" href={`/en${pathnameWithoutLang}`} />
 
-		{article && (
+		<meta name="og:title" content={Astro.props.title} />
+		{Astro.props.description && <meta name="og:description" content={Astro.props.description} />}
+		<meta name="og:image" content={Astro.props.image?.src || '/img/og.png'} />
+		<meta name="og:url" content={Astro.site ? `${Astro.site}${Astro.url.pathname}` : undefined} />
+		<meta name="og:locale" content={locale} />
+		{!Astro.props.article && <meta name="og:type" content="website" />}
+
+		{Astro.props.article && (
 			<meta name="og:type" content="article" />
-			<meta property="article:published_time" content={article.createdAt.toISOString()} />
+			<meta property="article:published_time" content={Astro.props.article.createdAt.toISOString()} />
 			<meta name="author" content={name} />
 		)}
 
-		{article && article.updatedAt && (
-			<meta property="article:modified_time" content={article.updatedAt.toISOString()} />
+		{Astro.props.article && Astro.props.article.updatedAt && (
+			<meta property="article:modified_time" content={Astro.props.article.updatedAt.toISOString()} />
 		)}
 
 		<meta name="twitter:card" content="summary_large_image" />
@@ -60,12 +71,12 @@ const { title, description, image, pagefindIgnore, article } = Astro.props;
 			<meta name="twitter:site" content={twitterHandle} />
 			<meta name="twitter:creator" content={twitterHandle} />
 		)}
-		<meta name="twitter:title" content={title} />
-		{description && <meta name="twitter:description" content={description} />}
-		<meta name="twitter:image" content={image?.src || '/img/og.png'} />
+		<meta name="twitter:title" content={Astro.props.title} />
+		{Astro.props.description && <meta name="twitter:description" content={Astro.props.description} />}
+		<meta name="twitter:image" content={Astro.props.image?.src || '/img/og.png'} />
 	</head>
 	<body id="body-bg">
-		<main data-pagefind-ignore={pagefindIgnore}>
+		<main data-pagefind-ignore={Astro.props.pagefindIgnore}>
 			<Navbar />
 			<LayoutGrid>
 				<slot name="left" slot="left" />

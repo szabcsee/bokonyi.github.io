@@ -1,0 +1,189 @@
+---
+import '../../../styles/article.css';
+
+import ImageGlow from "../../../components/ImageGlow.astro";
+import Card from "../../../components/Card.astro";
+import AuthorBadge from "../../../components/AuthorBadge.astro";
+import Layout from "../../../layouts/Layout.astro";
+import { openGraph } from 'spectre:globals';
+import { languages, getLangFromUrl, getLocaleFromLang } from '../../../i18n/ui';
+import type { Lang } from '../../../i18n/ui';
+
+import type { GetStaticPaths } from "astro";
+import type { CollectionEntry } from "astro:content";
+import { render } from "astro:content";
+import { getCollection } from "astro:content";
+
+function timeToRead(post: CollectionEntry<'posts'>): number {
+  const numWords = (post.body || "")
+    .replace(/.*\[(.*?)\].*/gm, "$1")
+    .replace(/```.*?```/gms, "")
+    .split(/\s+/).length;
+
+  const numImages = post.body?.match(/!\[/g)?.length || 0;
+  const numCodeblocks = post.body?.match(/```/g)?.length || 0;
+
+  return Math.ceil(numWords / 200) + Math.ceil(numImages / 6) + Math.ceil(numCodeblocks / 3);
+}
+
+export const getStaticPaths = (async () => {
+  const paths = [];
+
+  for (const lang of Object.keys(languages)) {
+    const posts = await getCollection('posts', (post) =>
+      post.data.draft !== true &&
+      (post.data.lang ?? 'en') === lang
+    );
+
+    for (const post of posts) {
+      paths.push({
+        params: { lang, post: post.id },
+        props: { post }
+      });
+    }
+  }
+
+  return paths;
+}) satisfies GetStaticPaths;
+
+const { lang } = Astro.params as { lang: keyof typeof languages };
+const t = (await import('../../../i18n/ui')).ui[lang as Lang];
+const { post } = Astro.props;
+
+const { Content, headings } = await render(post);
+---
+
+<Layout
+  title={post.data.title}
+  description={post.data.description}
+  image={post.data.image}
+  lang={lang}
+  article={{
+    createdAt: post.data.createdAt,
+    updatedAt: post.data.updatedAt,
+  }}
+>
+  <div class="left" slot="left">
+    <Card class="toc-card">
+      <h2 class="no-mt">Table of contents</h2>
+      <ol>
+        <li class="toc-li">
+          <a href={`#_top`} class="active">{post.data.title}</a>
+        </li>
+        {headings.map((heading, i) => (
+          <li class="toc-li" data-depth={heading.depth}>
+            <a href={`#${heading.slug}`}>{heading.text}</a>
+          </li>
+        ))}
+      </ol>
+    </Card>
+  </div>
+  <article slot="right" data-pagefind-body>
+    <Card>
+      <div class="article-header" id="_top" data-pagefind-ignore>
+        {post.data.image && (
+          <ImageGlow quality={100} class="article-image" src={post.data.image} alt={post.data.title} />
+        )}
+        <div class="header">
+          <div>
+            <h1 class="no-mt article-h1">{post.data.title}</h1>
+          </div>
+          <div class="article-info">
+            <span>{post.data.createdAt.toLocaleDateString(lang === 'hu' ? 'hu-HU' : 'en-US')}</span>
+            <span>/</span>
+            <span>{timeToRead(post)} {t['blog.readTime']}</span>
+            <span>/</span>
+            <span>{t['common.tags']} {post.data.tags.join(", ")}</span>
+          </div>
+          <div class="article-author">
+            <AuthorBadge author={post.data.author ?? 'szabcsee'} size="md" />
+          </div>
+        </div>
+      </div>
+      <Content />
+      <hr class="end-of-article" />
+      <a href={`/${lang}/blog`} class="block-link" data-pagefind-ignore>{t['blog.backToBlog']}</a>
+    </Card>
+    {openGraph.giscus && (
+      <Card>
+        <div class="comments" data-pagefind-ignore>
+          <script
+            is:inline
+            src="https://giscus.app/client.js"
+            data-repo={openGraph.giscus.repository}
+            data-repo-id={openGraph.giscus.repositoryId}
+            data-category={openGraph.giscus.category}
+            data-category-id={openGraph.giscus.categoryId}
+            data-mapping={openGraph.giscus.mapping}
+            data-strict={openGraph.giscus.strict === true ? "1" : "0"}
+            data-reactions-enabled={openGraph.giscus.reactionsEnabled === true ? "1" : "0"}
+            data-emit-metadata={openGraph.giscus.emitMetadata === true ? "1" : "0"}
+            data-input-position={openGraph.giscus.commentsInput}
+            data-theme={openGraph.giscus.theme || "https://spectre.lou.gg/styles/giscus"}
+            data-lang={openGraph.giscus.lang}
+            data-loading="lazy"
+            crossorigin="anonymous"
+            async
+          />
+        </div>
+      </Card>
+    )}
+  </article>
+</Layout>
+<script src="../../../scripts/toc.ts" />
+<style is:global>
+  .toc-card ol {
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: .5rem;
+    margin-bottom: 0;
+    list-style-type: none;
+    position: relative;
+  }
+
+  .toc-card ol li a {
+    color: #c7c7c7;
+    font-size: .925rem;
+    padding: .25rem .5rem;
+    box-decoration-break: clone;
+    -webkit-box-decoration-break: clone;
+  }
+
+  .toc-card ol li a:hover {
+    color: white;
+    text-decoration: none;
+  }
+
+  .toc-card ol li a.active {
+    color: white;
+    background: var(--primary);
+  }
+
+  .left {
+    height: 100%;
+    position: relative;
+  }
+
+  .toc-card {
+    position: sticky;
+    top: 2rem;
+  }
+
+  article {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+  }
+
+  .comments * {
+    border-color: #353535 !important;
+  }
+
+  @media screen and (max-width: 640px) {
+    article {
+      gap: 1rem;
+    }
+  }
+
+</style>

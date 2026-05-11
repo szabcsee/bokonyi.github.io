@@ -1,0 +1,77 @@
+---
+import '../../../styles/article-list.css';
+
+import { getCollection } from "astro:content";
+import Card from "../../../components/Card.astro";
+import Icon from "../../../components/Icon.astro";
+import Layout from "../../../layouts/Layout.astro";
+import { openGraph } from 'spectre:globals';
+import { languages, getLangFromUrl, getLocaleFromLang } from '../../../i18n/ui';
+import type { Lang } from '../../../i18n/ui';
+
+export function getStaticPaths() {
+  return Object.keys(languages).map(lang => ({ params: { lang } }));
+}
+
+const { lang } = Astro.params as { lang: keyof typeof languages };
+const t = (await import('../../../i18n/ui')).ui[lang as Lang];
+
+const projects = await getCollection('projects');
+---
+
+<Layout
+	title={t['projects.title']}
+	description={t['projects.description']}
+	lang={lang}
+	pagefindIgnore
+>
+  <div class="layout-grid-left" slot="left">
+    <Card class="flex-col-card">
+      <h2 class="no-mt">Stats</h2>
+			<div class="stats-div">
+				<div class="stat">
+					<h3 class="text-glow">{projects.length}</h3>
+					<span>Project{projects.length === 1 ? '' : 's'}</span>
+				</div>
+			</div>
+    </Card>
+  </div>
+  <div class="layout-grid-right" slot="right">
+		<Card>
+			<div class="header-container">
+				<Icon type='lucide' name="folder-git" width={24} height={24} class='glow-icon' />
+				<h2>Latest Projects</h2>
+			</div>
+			<div class="content-container">
+				{projects.sort((a, b) => b.data.date.getTime() - a.data.date.getTime()).map((project) => (
+					<a href={`/${lang}/projects/${project.id}`} class="post-container">
+						<div class="post-header">
+							<h3>{project.data.title}</h3>
+							<span class="post-date">{project.data.date.toLocaleDateString(lang === 'hu' ? 'hu-HU' : 'en-US')}</span>
+						</div>
+						<span>{project.data.description}</span>
+					</a>
+				))}
+			</div>
+		</Card>
+  </div>
+</Layout>
+<style>
+	.stats-div {
+		display: flex;
+		flex-direction: column;
+		gap: 1rem;
+	}
+
+	.stat {
+		display: flex;
+		flex-direction: column;
+	}
+
+	.stat h3 {
+		font-size: 2em;
+		margin: 0;
+		margin-bottom: .5rem;
+	}
+
+</style>

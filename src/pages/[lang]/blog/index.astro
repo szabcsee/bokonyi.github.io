@@ -1,0 +1,134 @@
+---
+import '../../../styles/article-list.css';
+
+import { Image } from 'astro:assets';
+import { getCollection } from "astro:content";
+import Card from "../../../components/Card.astro";
+import Icon from "../../../components/Icon.astro";
+import AuthorBadge from "../../../components/AuthorBadge.astro";
+import Layout from "../../../layouts/Layout.astro";
+import { openGraph } from 'spectre:globals';
+import { languages, defaultLang, getLangFromUrl, getLocaleFromLang } from '../../../i18n/ui';
+import type { Lang } from '../../../i18n/ui';
+
+export function getStaticPaths() {
+  return Object.keys(languages).map(lang => ({ params: { lang } }));
+}
+
+const { lang } = Astro.params as { lang: keyof typeof languages };
+const t = (await import('../../../i18n/ui')).ui[lang as Lang];
+
+const posts = await getCollection('posts', (post) =>
+  post.data.draft !== true &&
+  (post.data.lang ?? 'en') === lang
+);
+const tags = posts.flatMap((post) => post.data.tags);
+---
+
+<Layout
+  title={t['blog.title']}
+  description={t['blog.description']}
+  lang={lang}
+  pagefindIgnore
+>
+  <div class="layout-grid-left" slot="left">
+    <Card class="flex-col-card">
+      <h2 class="no-mt">{t['blog.filter']}</h2>
+      <ul class="tags-list">
+        <li>
+          <a class="blog-tag" href="#" data-tag="">{t['blog.noTags']}</a>
+        </li>
+        {Array.from(new Set(tags)).map((tag) => (
+          <li>
+            <a class="blog-tag" href="#" data-tag={tag}>{tag}</a>
+          </li>
+        ))}
+      </ul>
+    </Card>
+  </div>
+  <div class="layout-grid-right" slot="right">
+    <Card>
+      <div class="header-container">
+        <Icon type="lucide" name="rss" width={24} height={24} class='glow-icon' />
+        <h2>{t['blog.latestPosts']}</h2>
+      </div>
+      <div class="content-container">
+        {posts.sort((a, b) => b.data.createdAt.getTime() - a.data.createdAt.getTime()).map((post) => (
+          <a href={`/${lang}/blog/${post.id}`} class="post-container post-container-with-image" data-tags={post.data.tags.join(",")}>
+            {post.data.image && (
+              <div class="post-thumbnail">
+                <Image src={post.data.image} alt={post.data.title} width={160} height={100} />
+              </div>
+            )}
+            <div class="post-content">
+              <div class="post-header">
+                <h3>{post.data.title}</h3>
+                <span class="post-date">{post.data.createdAt.toLocaleDateString(lang === 'hu' ? 'hu-HU' : 'en-US')}</span>
+              </div>
+              <span class="post-description">{post.data.description}</span>
+              <div class="post-footer">
+                <AuthorBadge author={post.data.author ?? 'szabcsee'} />
+              </div>
+            </div>
+          </a>
+        ))}
+      </div>
+    </Card>
+  </div>
+</Layout>
+<script define:vars={{ noTagsLabel: t['blog.noTags'] }}>
+  const tags = document.querySelectorAll('.blog-tag');
+  const posts = document.querySelectorAll('.post-container');
+  const url = new URL(window.location.href);
+  const initialTags = url.searchParams.get('tags')?.split(',').filter((tag) => tag.length > 0) || [];
+  const selectedTags = new Set(initialTags);
+
+  function updatePostsVisibility() {
+    posts.forEach((post) => {
+      const postTags = post.dataset.tags!.split(',');
+      if (selectedTags.size > 0 && ![...selectedTags].every((tag) => postTags.includes(tag))) {
+        post.style.display = 'none';
+      } else {
+        post.style.display = '';
+      }
+    });
+  }
+
+  function updateURL() {
+    const newUrl = new URL(window.location.pathname, window.location.origin);
+    if (selectedTags.size > 0) {
+      newUrl.searchParams.set('tags', [...selectedTags].join(','));
+    }
+    history.pushState({ tags: [...selectedTags] }, '', newUrl);
+  }
+
+  tags.forEach((tag) => {
+    const tagValue = tag.dataset.tag || '';
+    if (selectedTags.has(tagValue)) {
+      tag.classList.add('active');
+    }
+
+    tag.addEventListener('click', (event) => {
+      event.preventDefault();
+
+      if (tagValue === '') {
+        selectedTags.clear();
+        tags.forEach(t => t.classList.remove('active'));
+        tag.classList.add('active');
+      } else {
+        tag.classList.toggle('active');
+
+        if (selectedTags.has(tagValue)) {
+          selectedTags.delete(tagValue);
+        } else {
+          selectedTags.add(tagValue);
+        }
+      }
+
+      updatePostsVisibility();
+      updateURL();
+    });
+  });
+
+  updatePostsVisibility();
+</script>

@@ -1,19 +1,40 @@
 ---
 import Icon from "./Icon.astro";
 import { name } from 'spectre:globals';
+import { getLangFromUrl, languages, defaultLang } from '../i18n/ui';
 
 const path = Astro.url.pathname;
+const currentLang = getLangFromUrl(Astro.url);
+
+function removeLangFromPath(pathname: string): string {
+  return pathname.replace(/^\/(en|hu)/, '') || '/';
+}
+
+const currentPathWithoutLang = removeLangFromPath(path);
 ---
+
 <nav>
-  <a class="site-title" href="/">{name}</a>
+  <a class="site-title" href={`/${currentLang}`}>{name}</a>
   <ul>
     <li>
-      <a href="/blog" class:list={{ active: path.startsWith('/blog') }}>Blog</a>
+      <a href={`/${currentLang}/blog`} class:list={{ active: path.startsWith(`/${currentLang}/blog`) }}>Blog</a>
     </li>
     <li class="nav-separator">/</li>
     <li>
       <input id="search" type="text" placeholder="Search (Ctrl+K)" />
       <div id="search-results"></div>
+    </li>
+    <li class="nav-separator">/</li>
+    <li class="lang-switch">
+      {Object.entries(languages).map(([lang, label]) => (
+        <a
+          href={`/${lang}${currentPathWithoutLang}`}
+          class:list={{ active: lang === currentLang }}
+          lang={lang}
+        >
+          {lang.toUpperCase()}
+        </a>
+      ))}
     </li>
   </ul>
   <button class="mobile-nav-toggle" aria-label="Mobile menu trigger">
@@ -222,6 +243,16 @@ const path = Astro.url.pathname;
 
   #search-results.active:has(*) {
     display: block;
+  }
+
+  .lang-switch {
+    display: flex;
+    gap: 0.25rem;
+  }
+
+  .lang-switch a {
+    font-size: 0.8em;
+    font-weight: 600;
   }
 
   .mobile-nav-toggle {
