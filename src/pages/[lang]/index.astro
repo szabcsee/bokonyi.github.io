@@ -1,6 +1,19 @@
 ---
+import '../../styles/index.css';
+
+import ProfilePicture from '../../assets/pfp.png';
+
+import Card from '../../components/Card.astro';
 import Layout from '../../layouts/Layout.astro';
-import { languages, defaultLang, getLangFromUrl } from '../../i18n/ui';
+import ImageGlow from '../../components/ImageGlow.astro';
+import Icon from '../../components/Icon.astro';
+import Robot from '../../components/Robot.astro';
+import { Image } from 'astro:assets';
+import { getCollection } from 'astro:content';
+import { getEntry } from 'astro:content';
+import { render } from 'astro:content';
+import { name, openGraph } from 'spectre:globals';
+import { languages, getLangFromUrl } from '../../i18n/ui';
 import type { Lang } from '../../i18n/ui';
 
 export function getStaticPaths() {
@@ -9,55 +22,122 @@ export function getStaticPaths() {
 
 const { lang } = Astro.params as { lang: keyof typeof languages };
 const t = (await import('../../i18n/ui')).ui[lang as Lang];
+
+const [posts, about, workExperience, quickInfo, socials] = await Promise.all([
+	getCollection('posts', (post) => post.data.draft !== true && (post.data.lang ?? 'en') === lang),
+	getEntry('other', 'about'),
+	getCollection('workExperience'),
+	getCollection('quickInfo'),
+	getCollection('socials')
+]);
+
+// biome-ignore lint/style/noNonNullAssertion: Should always be defined.
+const { Content: About } = await render(about!);
+
+// Get sorted posts for display
+const sortedPosts = posts.sort((a, b) => b.data.createdAt.getTime() - a.data.createdAt.getTime());
+
+// Calculate reading time
+function timeToRead(post: CollectionEntry<'posts'>): number {
+	const numWords = (post.body || "")
+		.replace(/.*\[(.*?)\].*/gm, "$1")
+		.replace(/```.*?```/gms, "")
+		.split(/\s+/).length;
+	const numImages = post.body?.match(/!\[/g)?.length || 0;
+	const numCodeblocks = post.body?.match(/```/g)?.length || 0;
+	return Math.ceil(numWords / 200) + Math.ceil(numImages / 6) + Math.ceil(numCodeblocks / 3);
+}
 ---
 
 <Layout
-  title={t['blog.title']}
-  description={t['blog.description']}
-  lang={lang}
+	title={openGraph.home.title || name}
+	description={openGraph.home.description}
+	pagefindIgnore
+	lang={lang}
 >
-  <div class="layout-grid-left" slot="left">
-  </div>
-  <div class="layout-grid-right" slot="right">
-    <div class="hero-text">
-      <h1 class="no-mt">Welcome to my blog</h1>
-      <p>Stuff that I write about — AI, development, tools, and whatever else I'm thinking about.</p>
-      <a href={`/${lang}/blog`} class="cta-link">Read the blog →</a>
-    </div>
-  </div>
+	<div class="layout-grid-left" slot="left">
+		<Card class="flex-col-card card-anim" style="animation-delay: 0ms">
+			<ImageGlow quality={100} width={120} height={120} src={ProfilePicture} alt="Louis looking out of a window" loading='eager' />
+			<h2>{name}</h2>
+			<ul class="overview-list">
+				{quickInfo.map((info) => (
+					<li>
+						<Icon type={info.data.icon.type} name={info.data.icon.name as any} width={24} height={24} class='glow-icon' />
+						<span>{info.data.text}</span>
+					</li>
+				))}
+			</ul>
+		</Card>
+		<Card class="card-anim robot-card" style="animation-delay: 80ms">
+			<Robot />
+		</Card>
+		<Card class="card-anim" style="animation-delay: 160ms">
+			<h3 class="no-mt">{lang === 'hu' ? 'Social media' : 'Socials'}</h3>
+			<ul class="overview-list">
+				{socials.map((item) => (
+					<li>
+						<a href={item.data.link} class="socials-link">
+							<Icon type={item.data.icon.type} name={item.data.icon.name as any} width={24} height={24} class='glow-icon' />
+							<span>{item.data.text}</span>
+						</a>
+					</li>
+				))}
+			</ul>
+		</Card>
+	</div>
+	<div class="layout-grid-right" slot="right">
+		<Card class="card-anim" style="animation-delay: 50ms">
+			<div class="header-container">
+				<Icon type='lucide' name="user" width={24} height={24} class='glow-icon' />
+				<h2>{lang === 'hu' ? 'Rólam' : 'About me'}</h2>
+			</div>
+			<div class="prose">
+				<About />
+			</div>
+		</Card>
+		<Card class="card-anim" style="animation-delay: 130ms">
+			<div class="header-container">
+				<Icon type='lucide' name="rss" width={24} height={24} class='glow-icon' />
+				<h2>{lang === 'hu' ? 'Legújabb bejegyzések' : 'Latest Posts'}</h2>
+			</div>
+			<div class="latest-posts-grid">
+				{sortedPosts.map((post, index) => (
+					<a href={`/${lang}/blog/${post.id}`} class="post-hero-link" style={`animation-delay: ${130 + index * 50}ms`}>
+						<Card class="post-hero-card">
+							<div class="article-header">
+								<ImageGlow quality={100} class="article-image" src={post.data.image} alt={post.data.title} />
+								<div class="header">
+									<div>
+										<h3 class="no-mt article-h1 post-hero-h1">{post.data.title}</h3>
+									</div>
+									<div class="article-info post-hero-info">
+										<span>{post.data.createdAt.toLocaleDateString(lang === 'hu' ? 'hu-HU' : 'en-GB')}</span>
+										<span>/</span>
+										<span>{timeToRead(post)} {t['blog.readTime']}</span>
+									</div>
+								</div>
+							</div>
+						</Card>
+					</a>
+				))}
+			</div>
+		</Card>
+
+		<Card class="card-anim" style="animation-delay: 210ms">
+			<div class="header-container">
+				<Icon type='lucide' name="briefcase-business" width={24} height={24} class='glow-icon' />
+				<h2>{lang === 'hu' ? 'Munkatapasztalat' : 'Work Experience'}</h2>
+			</div>
+			<div class="work-experience-container">
+				{workExperience.reverse().map((entry) => (
+					<div class="work-experience-entry">
+						<span class="work-experience-duration">{entry.data.duration}</span>
+						<h3 class="work-experience-company">{entry.data.company}</h3>
+						<span class="work-experience-role">{entry.data.title}</span>
+						<p class="work-experience-desc">{entry.data.description}</p>
+					</div>
+				))}
+			</div>
+		</Card>
+	</div>
 </Layout>
-
-<style>
-  .hero-text {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-  }
-
-  .hero-text h1 {
-    font-size: 2.5rem;
-    line-height: 1.2;
-  }
-
-  .hero-text p {
-    font-size: 1.125rem;
-    color: #a0a0a0;
-    max-width: 40ch;
-  }
-
-  .cta-link {
-    display: inline-block;
-    padding: 0.5rem 1rem;
-    background: var(--primary);
-    color: white;
-    text-decoration: none;
-    font-weight: 600;
-    border-radius: 4px;
-    width: fit-content;
-    margin-top: 0.5rem;
-  }
-
-  .cta-link:hover {
-    opacity: 0.9;
-  }
-</style>
