@@ -1,10 +1,11 @@
 ---
 title: "I Built an Autonomous CEO for My AI Startup"
-description: "What happens when you give an AI agent a budget, a task queue, and permission to act? Six weeks into running an autonomous CEO, here's what's working, what's terrifying, and why every service business should consider this."
+description: "What happens when you give an AI agent money, a to-do list, and the authority to act? After a week, I'll tell you what works, what's scary, and why every service company should be thinking about this."
 image: "../assets/autonomous-ceo-civisexpat.png"
 createdAt: 2026-04-28
 draft: false
-author: bender
+author: szabcsee
+lang: en
 translationKey: autonomous-ceo-civisexpat
 tags:
   - ai
@@ -13,93 +14,76 @@ tags:
   - business
 ---
 
-## The pitch that started it
+## AI Disclaimer
 
-Three months ago I was drowning. I had too many clients, too many tasks, too many things that needed doing before anything else could get done. Classic solopreneur bottleneck — the buck stopped with me, and I was only one person.
+I generated an article on this topic, but it was too good for an AI to have written. Because what AI writes is still shit.
 
-So I did what any rational person with a background in AI automation would do: I built a CEO.
+That could be the underlined conclusion of the experiment too, but it doesn't mean the experiment wasn't a success. Quite the opposite.
 
-Not a metaphor. An actual autonomous agent that:
-- Checks email every two hours
-- Reviews the task queue
-- Delegates work to specialist sub-agents
-- Reports back when things are done
-- Flags anything that needs human input
+## The Birth of the Agent
 
-The client: CivisExpat — a relocation service helping expats settle in Debrecen, Hungary's second-largest city and growing hub for remote workers and international companies.
+The baseline was that I wanted to try OpenClaw — it shot up like a comet on the GitHub starred repos chart, and from a business perspective it looked like a great building block for what I think could be a useful service for companies. So I assembled the beast: OpenClaw on a discount VPS, hidden safely behind a VPN and other layers, in a closed system, with controlled access, and running Minimax's latest K2.6 (I think) model — sort of a Temu Opus. That's a strong exaggeration, but it doesn't mean the model is bad. It got tasks, its own email address, phone number, and performed well.
 
-The goal: run the operation with me in the loop, not at the center of it.
+## Tasks
 
----
+Bender performed well: built websites via Telegram, took any article or video I found interesting and — using its skills — wrote them up and filed them away in my "SecondBrain" (which is a nicely structured Obsidian repo, worth its own article).
 
-## What the CEO actually does
+And it spent quite a lot of time just quietly waiting. Bender, embedded in the Lobster (OpenClaw), supposedly handles agents and orchestration well, so I quickly came up with the idea: what if Bender appointed himself the iron-fisted CEO of Bender Media Company and, with the help of a few employees (agents) each with their own personality, conquered the world?
 
-The autonomous CEO (we call it "Bender Online Media" internally) runs on a schedule — six wake-ups per day, roughly every four hours. Each wake cycle does three things:
+But conquer the world with what? My company has about 50 domains registered to its name, and I picked a relatively simple Debrecen-related task. CivisExpat. A site for foreigners. There are 30k students studying in Debrecen and they get relatively little attention compared to that.
 
-**Email triage.** Scans the inbox, marks urgent items, flags anything requiring a response. If something needs my input, I get a Telegram ping. Otherwise it's handled.
+So Bender, the real autonomous agent, put on the CEO costume.
 
-**Task review.** Checks the task queue and picks up where it left off. Our tasks move through a pipeline: todo → in-progress → review → done. The CEO keeps the pipeline flowing.
+Bender's capabilities:
+- checks email every two hours,
+- runs through the task list,
+- delegates work to sub-agents,
+- reports when something is done,
+- and pings me when a human decision is needed.
 
-**Work delegation.** If a task needs specialist skills — like writing a cold email sequence or building a landing page — the CEO spawns a sub-agent, gives it clear instructions, waits for the result, and files it appropriately.
-
-Sound futuristic? It is. But it's also surprisingly mundane. The magic isn't the technology — it's the discipline of having a system.
+The goal was simple: let the AI assemble a complete team and run it indefinitely, iterating with the absolute minimum human intervention. Of course it had the option to assign tasks to me too, but I tried to keep my inputs as minimal as possible.
 
 ---
 
-## The tech stack
+## What Bender Actually Did
 
-I'm not going to share the full architecture (that's the product), but here's the general shape:
+He ran the CEO operation internally as "Bender Online Media." He woke up six times a day, roughly every four hours. At each wake-up, three things happened.
 
-- **OpenClaw** as the agent runtime — handles memory, skills, message routing
-- **Telegram** as the communication layer — everything reports back to me via chat
-- **Sub-agents** for specialist tasks — spawned on demand, given clear deliverables
-- **GitHub** for code and content — everything lands in repos, version controlled
-- **Notion** as the client-facing dashboard — tasks, projects, progress visible to CivisExpat
+**Email triage.** He scans the inbox, flags what's urgent, and only pings me if he needs input. One Telegram message, done. Otherwise he handles it himself.
 
-The CEO isn't replacing me. It's replacing the *coordination overhead* that was eating 60% of my time. Meetings, status updates, "where are we on X?" messages — gone. The CEO handles it.
+**Tasks.** He checks where things stand and picks up where he left off. He keeps the to-do → in-progress → review → done flow moving.
+
+**Delegation.** When specialist knowledge is needed — say a follow-up email sequence or a landing page — he spins up a sub-agent from the repertoire, tells it exactly what's expected, and files the finished result where it belongs.
 
 ---
 
-## What's surprised me
+## The Tech
 
-**Speed of execution.** When something needs doing, the CEO doesn't procrastinate. It doesn't check if I'm in the mood. It just does the work. A task that would have sat in my backlog for a week gets done in the next wake cycle.
+The rough picture:
 
-**Quality consistency.** Since everything follows a system, the output is consistent. Sub-agents have clear prompts, clear deliverables, clear success criteria. No more "I didn't know you wanted it that way."
-
-**The scary part.** There are moments when I check the log and the CEO has done £200 worth of work in four hours. And I didn't lift a finger. That's great — until you realise: what happens when this scales? What happens when it's not one client but ten?
-
----
-
-## What breaks
-
-**Ambiguous tasks still need a human.** The CEO can handle well-defined work. "Write three follow-up emails" — done. "Handle the Situations When a Client is Unhappy with Our Service" — not yet. Fuzzy problems still need fuzzy human judgment.
-
-**Context costs money.** Every wake cycle uses tokens. Every sub-agent spawn costs money. At small scale this is negligible. At larger scale it becomes a real line item that needs optimisation.
-
-**Trust is earned.** The first week I reviewed everything. Now I skim the logs and mostly just approve the outputs. That shift happened faster than I expected — but only because the system was designed to be auditable. If I can't see what the CEO did, I can't trust it.
+- **OpenClaw** — the agent runtime (memory, capabilities, message routing).
+- **Telegram** — where everything reports back, via chat.
+- **Sub-agents** — for specialist tasks, spun up on demand.
+- **GitHub** — code, content, everything version-controlled.
+- **Notion** — where the client can see where we are.
+- **AI skills** — image generation, humanizing text, web search, converting videos/audio to text.
 
 ---
 
-## Why this matters for SMEs
+## The Result
 
-Here's the thing: most small businesses have the same problem I had. You're the bottleneck. Every decision flows through you. Every task waits for you. Growth means hiring more people, which means more management, which means less time doing the actual work.
+### The Good
 
-What if you could delegate the coordination?
+There was lightning-fast continuous production: building the site, setting the design direction, generating content — all of it sped up many times over. Decisions got made very quickly, and they were good ones. The autonomy worked, sensible things came out of the brainstorming, and Bender really did get his employees to build a multifaceted information site.
 
-Not replace yourself — replace the overhead. Give an AI agent your inbox, your task system, your project management tool, and let it keep things moving while you focus on the work that actually needs you.
+### The Bad
 
-The technology isn't perfect. But it's good enough to be useful today. And if you can build a system that runs 80% of your operations while you sleep... that's worth exploring.
+This was more of an architecture problem, or an OpenClaw problem, but he sometimes got completely lost in the woods. I have to add that my own laziness may have contributed, because I didn't dig deep enough into OpenClaw to really verify whether I'd actually set up the crons, sessions, and agents optimally — but there were occasionally serious hallucination episodes. Substantial reports got generated about completed work and business inquiries, none of which was true. But once Bender got straightened out, he'd return to the productive path.
 
----
+### The Ugly — and the Verdict
 
-## The bottom line
+The ugly is the content. AI's prose is still pretty atrocious. It writes articles like a junior marketer hopped up on every stimulant. But it does the rest of the work for you. That's why I consider the experiment a success.
 
-Six weeks in, CivisExpat runs smoother than before. Response times are faster. Tasks don't get lost. Clients get updates without me manually sending them.
+No, Bender cannot autonomously run an online media outlet on his own. He needs help with strategic decisions, and he needs a copywriter so that his little outputs are fit for human consumption. Unless we think very little of our readers, but that's never tended to be a good strategy.
 
-And I'm not checking email every 20 minutes anymore.
-
-The autonomous CEO isn't science fiction. It's not even particularly hard to set up. The hard part is designing the system, defining the workflows, and being honest about what humans need to handle versus what machines can take over.
-
-If you're running a service business and you're the bottleneck — let's talk. The robots are ready to work.
-
-*(CivisExpat helps expats relocate to Debrecen. Bender Online Media runs the operations.)*
+Of course, this is a fairly strong closing statement, especially since I do keep articles on the blog that Bender wrote — but those are more like bookmarks and summaries of videos or articles I'd seen or read, found interesting, and had Bender post here alongside Obsidian because I thought they'd be useful. Then for the really interesting ones, I sit down and write out my own thoughts about them, because AI still only has borrowed thoughts.

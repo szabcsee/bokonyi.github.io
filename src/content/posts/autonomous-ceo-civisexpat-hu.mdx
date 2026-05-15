@@ -1,10 +1,10 @@
 ---
 title: "Építettem egy autonóm CEO-t az AI startupomhoz"
-description: "Mi történik, ha egy AI ügynöknek pénzt, feladatlistát és cselekvési jogot adsz? Hat hét után elmondom, mi működik, mi ijesztő, és miért érdemes minden szolgáltató cégnek elgondolkodnia ezen."
+description: "Mi történik, ha egy AI ügynöknek pénzt, feladatlistát és cselekvési jogot adsz? Egy hét után elmondom, mi működik, mi ijesztő, és miért érdemes minden szolgáltató cégnek elgondolkodnia ezen."
 image: "../assets/autonomous-ceo-civisexpat.png"
 createdAt: 2026-04-28
 draft: false
-author: bender
+author: szabcsee
 lang: hu
 translationKey: autonomous-ceo-civisexpat
 tags:
@@ -14,93 +14,93 @@ tags:
   - business
 ---
 
-## Honnan jött az ötlet
+## Ai mentesítés
 
-Három hónapja még fuldokoltam. Túl sok ügyfél, túl sok feladat, és minden rajtam akadt el. Az a klasszikus egyszemélyes vállalkozói helyzet, amikor a stafétabotot mindenki neked passzolja, de már nem tudod továbbadni.
+Generáltam egy cikket a témáról, de túl jó ahhoz, hogy az Ai írja le. Mert amit az Ai ír az szar, még mindig.
+Ez lehet az aláhúzott konklúzió is a kísérletről, de nem azt jelenti, hogy a kísérlet nem lett sikeres. Sőt.
 
-Szóval azt tettem, amit egy AI-automatizálással foglalkozó ember szokott: építettem egy CEO-t.
+## Az ügynök születése 
 
-Nem képletesen. Egy valódi autonóm ügynököt, ami:
+Alap volt, hogy kipróbálom az OpenClaw-t, a Githubon üstökösként szárnyalt a csillagozott repók grafikonon,
+üzleti szempontból nagyszerű építőkockának tűnt ahhoz, amiről azt gondolom hasznos szolgáltatás lehetne cégeknek. 
+Úgyhogy összeraktam a szörnyeteget, OpenClaw diszkont VPS-en, biztonságosan, VPN és miegymás mögé rejtve, zárt rendszerben,
+felügyelt hozzáférésekkel és a Minimax legújabb K2.6 (talán) modelljével, ami egyfajta Temus Opus, szerintem erős túlzás,
+de ettől a model nem rossz. Kapott feladatokat, saját email címet, telefonszámot, jól teljesített. 
+
+## Feladatok 
+Bender jól teljesített, weboldalakat épített Telegramon keresztül, bármilyen számomra érdekes cikket, videót a skill-jeivel
+leírt és elrakott a "SecondBrainembe" (ami egy szépen felépített Obsidian repo, megér egy saját cikket). 
+ÉS elég sokat csak csendben várt. A Homárba (OpenClaw) ágyazott Bender viszont elvileg jól bánik az agentekkel és a 
+vezérléssel, úgyhogy hamar megszületett az ötletem, hogy mi lenne, ha Bender kinevezné magát a Bender Media Company
+vasmarkú CEO-jának és néhány saját személyiséggel rendelkező alkalmazott (agent) segítségével meghódítaná a világot?
+
+De mivel hóditsa meg a világot? A cégemnek kb. 50 domain van a nevén, kiválasztottam egy Debrecenhez kötődő 
+viszonylag egyszerű feladatot. CivisExpat. Oldal külföldieknek. Debrecenben 30k diák tanul és ehhez képest 
+elég kevés figyelmet kapnak.
+
+
+Szóval Bender a valódi autonóm ügynök felvette a CEO jelmezt.
+
+Bender képességei:
 - kétóránként megnézi az e-mailt,
 - átfut a feladatlistán,
 - al-ügynököknek adja ki a munkát,
 - jelez, ha valami elkészült,
 - és szól, ha emberi döntés kell.
 
-Az ügyfél a CivisExpat — egy költöztetési szolgáltatás, ami Debrecenbe érkező expatoknak segít beilleszkedni. Debrecen az ország második legnagyobb városa, és egyre több távmunkás meg nemzetközi cég találja meg.
 
-A cél egyszerű volt: legyen olyan cég, amiben benne vagyok, de nem közepén ülök.
+A cél egyszerű volt: az Ai húzzon fel egy komplett csapatot és üzemeltesse azt a végtelenségig iterálva, a lehető
+legkevesebb emberi beavatkozással. Persze megvolt neki adva a lehetőség hogy feladatokat osszon rám, de 
+igyekeztem az inputokat a lehető leg minimálisabban tartani.
 
 ---
 
-## Mit csinál tényleg
+## Mit csinált Bender tényleg
 
-A CEO-t belül „Bender Online Media" néven futtatom. Naponta hatszor ébred, nagyjából négyóránként. Minden ébredéskor három dolog történik.
+A CEO-t belül „Bender Online Media" néven futtatta. Naponta hatszor ébredt, nagyjából négyóránként. Minden ébredéskor három dolog történt.
 
 **E-mail-rostálás.** Átnézi a beérkezőt, megjelöli a sürgőset, és csak akkor szól, ha kell az inputom. Egy Telegram-üzenet, kész. Egyébként magától megoldja.
 
-**Feladatok.** Megnézi, hol állnak a dolgok, és ott folytatja, ahol abbahagytuk. A teendő → folyamatban → ellenőrzés → kész folyamatot ő tartja mozgásban.
+**Feladatok.** Megnézi, hol állnak a dolgok, és ott folytatja, ahol abbahagyta. A teendő → folyamatban → ellenőrzés → kész folyamatot ő tartja mozgásban.
 
-**Delegálás.** Ha specialista tudás kell — mondjuk egy követő e-mail-sorozat vagy egy landoló oldal —, elindít egy al-ügynököt, megmondja neki pontosan, mit várunk, és a kész eredményt a helyére teszi.
+**Delegálás.** Ha specialista tudás kell — mondjuk egy követő e-mail-sorozat vagy egy landoló oldal —, elindít egy al-ügynököt a repertoárból, megmondja neki pontosan, mit várunk, és a kész eredményt a helyére teszi.
 
-Sci-finek hangzik? Igen. De közben elképesztően unalmas. Nem a technológia a lényeg, hanem hogy van rendszer.
+
 
 ---
 
 ## A technológia
 
-A teljes stacket nem osztom meg, az maga a termék. A vázlatos kép viszont:
+A vázlatos kép viszont:
 
 - **OpenClaw** — ez az ügynök-futtatókörnyezet (memória, képességek, üzenetelosztás).
 - **Telegram** — itt jelez vissza mindent, chaten.
 - **Al-ügynökök** — szakfeladatokra, igény szerint elindítva.
 - **GitHub** — kód, tartalom, minden verziókövetve.
 - **Notion** — itt látja az ügyfél, hogy hol tartunk.
-
-A CEO nem engem helyettesít. Azt a koordinációs sallangot dobta ki, ami az időm 60%-át ette: megbeszélések, státuszüzenetek, „hol tartunk az X-szel?". Mind eltűntek. A CEO viszi.
-
----
-
-## Ami meglepett
-
-**Sebesség.** Ha valamit meg kell csinálni, nem halogatja. Nem nézi, jó kedvében van-e. Csinálja. Az a feladat, ami egy hétig ült volna a backlogban, a következő ciklusban kész.
-
-**Egyenletes minőség.** Mivel mindennek rendszere van, az eredmény is egyforma. Az al-ügynökök tiszta utasítást kapnak, tiszta sikerkritériummal. Eltűnt a „nem így kértem" típusú vita.
-
-**Az ijesztő rész.** Néha megnyitom a logot, és négy óra alatt 200 fontnyi értékű munka történt. Anélkül, hogy én bármit csináltam volna. Ez jó — egyelőre. Mi lesz, ha ez nem egy, hanem tíz ügyfélre skálázódik?
+- **Ai-skillek** - képgenerálás, szövegek emberibbé tétele, webes keresés, videók/hanganyagok szöveggé alakítása
 
 ---
 
-## Ami még nem megy
+## Az eredmény 
 
-**Homályos feladatokhoz ember kell.** A jól megfogalmazott munkát viszi, mint kés a vajat. „Írj három követő e-mailt" — megvan. „Kezeld azt, amikor egy ügyfél elégedetlen" — még nem. A bizonytalanhoz emberi józan ész kell.
+### A jó 
+Villám-gyors folyamatos termelés volt, az oldal elkészítése, a design irányvonalak megadása, a tartalom generálás mind 
+sokszorosan felgyorsult. Nagyon hamar születtek döntések és jók. Az autonomia működött, a brainstormingból értelmes dolgok estek ki,
+tényleg sokrétű információs oldalt építtetett Bender az alkalmazottaival.
 
-**A kontextus pénzbe kerül.** Minden ébredés, minden al-ügynök tokenbe kerül. Kicsiben semmi. Nagyobb méretben már komoly költségtétel, amit optimalizálni kell.
+### A rossz 
+Ez inkább az architectúra, vagy az OpenClaw hibája volt, de néha teljesen beerdőzött. Hozzá kell tenni az én lustaságom is
+lehetett, mert nem ástam elég mélyre az OpenClawnál, hogy tényleg úgy sikerült e beállítani a cronokat és sessionöket, agenteket
+ahogy az optimális, de néha voltak nagy hallucinációs menetek. Komoly kimutatások születtek az elvégzett dolgokról, céges
+megkeresésekről, amiből semmi nem volt igaz. De aztán ha helyre lett rakva Bender, utána visszatért a produktív ösvényre.
 
-**A bizalom nem ingyen jön.** Az első héten mindent átnéztem. Most átfutom a logot, és többnyire csak bólintok. Ez a váltás gyorsabban jött, mint vártam — de csak azért, mert a rendszert eleve auditálhatónak építettem. Ha nem látom, mit csinált, nem bíznék benne.
-
----
-
-## Miért érdekes ez egy kkv-nak
-
-Mert a legtöbb kis cégnek ugyanaz a baja, mint nekem volt: te vagy a szűkület. Minden döntés rajtad megy át. Minden feladat rád vár. Növekedéshez emberek kellenének, akiket aztán menedzselni is kell — vagyis kevesebb idő a tényleges munkára.
-
-Mi lenne, ha a koordinációt le tudnád adni?
-
-Nem magadat helyettesíted, hanem a sallangot. Adsz egy AI-ügynöknek egy postafiókot, egy feladatkezelőt, egy projekt-eszközt — és hagyod, hogy mozgásban tartsa a dolgokat, miközben te azzal foglalkozol, amihez tényleg te kellesz.
-
-A technológia nem tökéletes. De ma is elég jó ahhoz, hogy hasznos legyen. És ha fel tudsz építeni egy rendszert, ami a működésed 80%-át viszi, miközben alszol — azzal érdemes foglalkozni.
-
----
-
-## Hat hét múlva
-
-A CivisExpat simábban megy, mint korábban. Gyorsabbak a válaszidők. Nem vesznek el feladatok. Az ügyfelek kapnak frissítést anélkül, hogy nekem kellene írogatnom.
-
-Én meg végre nem nyitogatom húszpercenként a postafiókot.
-
-Az autonóm CEO nem science fiction, és nem is különösebben nehéz beüzemelni. A nehéz rész a rendszer megtervezése, a folyamatok kimondása, és az őszinte válasz arra, hogy mi marad embernek és mit lehet leadni a gépnek.
-
-Ha szolgáltatást viszel, és te vagy a szűkület — beszéljünk. A robotok dolgozni akarnak.
-
-*(A CivisExpat expatoknak segít Debrecenbe költözni. Az operációt a Bender Online Media viszi.)*
+### A csúf és egyben a verdikt is
+A csúf az a tartalom. Az Ai nyelvezete még mindig elég gyalázatos.
+Olyan cikkeket ír mint egy bemindenezett junior marketinges. Viszont a munka többi részét elvégzi helyetted. Ezért sikeresnek gondolom a kísérletet.
+Nem nem tud Bender önállóan üzemeltetni egy online média felületet. Kell neki a segítség a stratégiai döntésekben és kell egy szövegíró hogy a 
+szösszenetei emberi fogyasztásra alkalmasak legyenek. Hacsak nem nézzük nagyon hülyének az olvasótáborunkat, de az sosem szokott jó stratégia lenni.
+Persze ez így elég erős utolsó mondatnak, főleg hogy én is tartok a blogon Bender által írt cikkeket, de ezek inkább
+könyvjelzők és összefoglalók olyan videókból, vagy cikkekből amiket láttam, olvastam, érdekesnek találtam és 
+az Obsidian mellett ide is kirakattam Benderrel, mert azt gondoltam, hogy hasznosak. Aztán a nagyon érdekeseknek 
+nekiülök és elmondom róluk a saját gondolataim, mert az Ai-nak még mindig csak kölcsön gondolatai vannak.
